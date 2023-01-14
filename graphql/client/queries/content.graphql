@@ -1,0 +1,13 @@
+query ContentNode($id: ID!) {
+  ContentNode(id: $id) {
+    alternates {
+      fullSlug
+    }
+    content
+    full_slug
+    id
+    name
+    parent_id
+    uuid
+  }
+}

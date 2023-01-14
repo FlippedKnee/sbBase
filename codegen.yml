@@ -1,0 +1,16 @@
+overwrite: true
+schema: "https://gapi.storyblok.com/v1/api"
+documents: "graphql/**/*.graphql"
+headers:
+  Token: "QYXLbfmdKHx5xpuwxM8ZJwtt"
+  Version: "Draft"
+generates:
+  graphql/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+      - "fragment-matcher"
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

@@ -1,0 +1,10 @@
+query Paths {
+  Links {
+    items {
+      slug
+      name
+      isFolder
+      isStartpage
+    }
+  }
+}
