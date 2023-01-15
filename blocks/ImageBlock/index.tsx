@@ -36,6 +36,7 @@ const ImageBlock = ({
   mobileMaxWidth,
   mobileWidth,
   maxWidth,
+  borderRadius,
   animate,
 }: TImageBlock) => {
   return (
@@ -44,6 +45,7 @@ const ImageBlock = ({
       maxHeight={maxHeight}
       maxWidth={maxWidth}
       mobileMaxWidth={mobileMaxWidth ?? maxWidth}
+      borderRadius={borderRadius}
       mobileMaxHeight={mobileMaxHeight ?? maxHeight}
     >
       <styles.ImageBlockContainer

@@ -16,9 +16,19 @@ export type THero = BlokItem & {
   text?: Blok;
   backgroundImage?: Asset;
   video?: Asset;
+  display?: string;
+  alignItems?: string;
+  justifyContent?: string;
 };
 
-const Hero = ({ image, backgroundImage, text }: THero) => {
+const Hero = ({
+  image,
+  backgroundImage,
+  text,
+  justifyContent,
+  display,
+  alignItems,
+}: THero) => {
   const textContent = useDynamicComponent(text, elements);
   const [initial, setIniital] = useState(false);
   useEffect(() => {
@@ -26,7 +36,11 @@ const Hero = ({ image, backgroundImage, text }: THero) => {
   }, []);
   return (
     <styles.HeroWrapper backgroundImage={backgroundImage?.filename}>
-      <styles.HeroContainer>
+      <styles.HeroContainer
+        display={display}
+        alignItems={alignItems}
+        justifyContent={justifyContent}
+      >
         <styles.HeroText>{textContent}</styles.HeroText>
         <styles.HeroImage>
           <ImageComponent image={image} height={350} width={225} />
@@ -37,16 +51,3 @@ const Hero = ({ image, backgroundImage, text }: THero) => {
 };
 
 export default Hero;
-
-export const Test = styled.p`
-  font-weight: 400;
-  font-size: 126px;
-  line-height: 164px;
-  /* identical to box height */
-
-  color: #161719;
-
-  text-shadow: -1px 1px 2px rgba(9, 9, 10, 0.2),
-    1px -1px 2px rgba(9, 9, 10, 0.2), -1px -1px 2px rgba(35, 37, 40, 0.9),
-    1px 1px 3px rgba(9, 9, 10, 0.9);
-`;

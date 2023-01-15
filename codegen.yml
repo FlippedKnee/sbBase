@@ -2,7 +2,7 @@ overwrite: true
 schema: "https://gapi.storyblok.com/v1/api"
 documents: "graphql/**/*.graphql"
 headers:
-  Token: "QYXLbfmdKHx5xpuwxM8ZJwtt"
+  Token: "IjZn7WiNrOwUaAHmtXJaawtt"
   Version: "Draft"
 generates:
   graphql/generated/graphql.tsx:

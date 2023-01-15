@@ -7,7 +7,7 @@ const nextConfig = {
     domains: ['a.storyblok.com', 'https://localhost:3010', 'https://discord.com']
   },
   env: {
-    STORYBLOK: 'QYXLbfmdKHx5xpuwxM8ZJwtt',
+    STORYBLOK: 'IjZn7WiNrOwUaAHmtXJaawtt',
     NEXTAUTH_URL:"http://localhost:3000",
     NEXTAUTH_SECRET:"2MEMzGYnxs4nfurJignZRtE+T99Zk8MsAwkUYm9xpl0=",
     TWITTER_CONSUMER_KEY:'C17qKAFtDwwTbQGdZI9XwcvdC',

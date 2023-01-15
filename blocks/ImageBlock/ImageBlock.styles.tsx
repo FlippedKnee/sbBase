@@ -14,6 +14,7 @@ type StyledImageProps = {
   mobileMaxWidth?: string;
   mobileMaxHeight?: string;
   animate?: boolean;
+  borderRadius?: string;
 } & TLayoutStyles;
 
 const slightFlip = keyframes`
@@ -45,13 +46,13 @@ export const ImageBlockContainer = styled.div<StyledImageProps>`
     aspect-ratio: ${({ imageAspectRatio, imageAspectRatioMobile }) =>
     imageAspectRatio || imageAspectRatioMobile || "4 / 3"};
   } */
-  ${({ animate }) =>
-    animate &&
-    `
-    
-    animation: ${slightFlip} 3000ms ease-in-out infinite alternate;
-  `} /* rotate: 45deg; */
-  @media(min-width: 991px) {
+  animation: ${({ animate }) =>
+    animate
+      ? css`
+          ${slightFlip} 3000ms ease-in-out infinite alternate
+        `
+      : ""}; /* rotate: 45deg; */
+  @media (min-width: 991px) {
     display: none;
   }
 `;
@@ -68,6 +69,8 @@ export const ImageBlockLayoutContainer = styled.div<StyledImageProps>`
   width: ${({ mobileWidth }) => mobileWidth ?? "100%"};
   max-width: ${({ mobileMaxWidth }) => mobileMaxWidth ?? "100%"};
   max-height: ${({ mobileMaxHeight }) => mobileMaxHeight ?? "100%"};
+  overflow: hidden;
+  ${({ borderRadius }) => `border-radius: ${borderRadius}`};
   @media (min-width: 991px) {
     width: ${({ width }) => width ?? "100%"};
     max-width: ${({ maxWidth }) => maxWidth ?? "100%"};

@@ -12,6 +12,7 @@ type THeaderContainer = {
 
 type TShowOnSide = {
   showOnSide?: boolean;
+  hasIcon?: boolean;
 };
 
 export const HeaderContainer = styled.div<THeaderContainer>`
@@ -19,7 +20,7 @@ export const HeaderContainer = styled.div<THeaderContainer>`
   ${({ showFixedBackground, background }) =>
     showFixedBackground &&
     `
-    background: #16171A;
+    background: ${background};
     box-shadow: 0 0 20px #000;
   `}
 
@@ -39,10 +40,12 @@ export const HeaderContent = styled.div<THeaderContainer>`
   justify-content: space-between;
   align-items: center;
   height: 56px;
-  width: calc(100% - 16px);
+  width: calc(100% - 40px);
   position: relative;
+  gap: 36px;
   @media (min-width: ${(props) => props.theme.mediaQuery.mediaMinSmall}) {
     width: calc(100% - 36px);
+    justify-content: flex-start;
     /* padding: 0 36px; */
   }
   @media (min-width: ${(props) => props.theme.mediaQuery.mediaMinMedium}) {
@@ -64,6 +67,7 @@ export const HeaderLinks = styled.div<THeaderContainer>`
   display: flex;
   gap: 40px;
   align-items: center;
+  flex: 1;
 
   animation: ${(props) =>
     props.isOpen
@@ -84,7 +88,7 @@ export const HeaderLinks = styled.div<THeaderContainer>`
     display: none;
   }
 
-  ${({ isOpen }) =>
+  ${({ isOpen, background }) =>
     isOpen &&
     `
     position: fixed;
@@ -92,26 +96,32 @@ export const HeaderLinks = styled.div<THeaderContainer>`
     margin-left: 0px;
     display:grid !important;
     flex-direction: column;
-    align-content:center;
+    align-content:flex-start;
     width: 300px;
     max-width: 80%;
     z-index:999;
-    gap: 60px;
-    
-    background: #16171A;
+    gap: 24px;
+    background: ${background};
     box-shadow: 0 0 20px rgba(0,0,0,0.9);
     left:0;
     height: 100%;
-    padding: 12px;
-    
-    align-items: center;
-    justify-content:center;
+    padding: 24px;
     overflow:hidden;
     transition: width 300ms ease;
-    border-radius: 16px;
+    padding-top: 40px;
     
   
   `}
+`;
+
+type TLogoImageContainer = {
+  width?: string;
+  height?: string;
+};
+export const LogoImageContainer = styled.div<TLogoImageContainer>`
+  position: relative;
+  width: ${(props) => props?.width ?? 60}px;
+  height: ${(props) => props?.height ?? 60}px;
 `;
 
 export const HeaderQuickLinks = styled.div<THeaderContainer>`
@@ -144,7 +154,8 @@ export const HeaderQuickLinks = styled.div<THeaderContainer>`
 
 export const HeaderLinkLabel = styled.span<TShowOnSide>`
   display: block;
-  margin-left: ${({ showOnSide }) => (showOnSide ? "20px" : "8px")};
+  margin-left: ${({ showOnSide, hasIcon }) =>
+    !hasIcon ? 0 : showOnSide ? "20px" : "8px"};
   position: relative;
   &::after {
     content: "";
@@ -225,6 +236,7 @@ export const HeaderFooterLinks = styled.div<THeaderContainer>`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-top: 24px;
 `}
 `;
 

@@ -6,7 +6,7 @@ export function initializeApollo(preview = false){
             uri: "https://gapi.storyblok.com/v1/api",
             credentials: "include",
             headers: {
-                token: 'QYXLbfmdKHx5xpuwxM8ZJwtt',
+                token: 'IjZn7WiNrOwUaAHmtXJaawtt',
                 version: preview ? "draft" : "published"
             }
         }),

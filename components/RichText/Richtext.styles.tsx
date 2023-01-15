@@ -11,10 +11,12 @@ type RichTextStyledProps = {
   fontSize?: number;
   fontWeight?: string;
   linebreakHeight?: number;
+  fontFamily?: string;
 };
 
 export const RichTextContainer = styled.div<RichTextStyledProps>`
   width: 100%;
+  ${({ fontFamily }) => fontFamily && `font-family: ${fontFamily}`};
   color: ${(props) => props.textColor ?? "#000"};
   text-align: ${(props) => props.textAlign ?? "initial"};
   margin-top: ${(props) => (props.marginTop ? props.marginTop : 0)}px;

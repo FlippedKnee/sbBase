@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { useState } from "react";
 import { useTheme } from "styled-components";
 import ImageComponent from "../../components/Image";
@@ -20,6 +21,8 @@ type THeader = {
   background?: string;
   maxWidth?: string;
   footerLinks?: THeaderLinks[];
+  logoWidth?: string;
+  logoHeight?: string;
 };
 const Logo = () => (
   <svg
@@ -60,32 +63,29 @@ const Header = ({
   background,
   maxWidth,
   footerLinks,
+  logoHeight,
+  logoWidth,
 }: THeader) => {
   const [scroll, height, width] = useScrollPosition();
   const [isOpen, setIsOpen] = useState(false);
-
-  const theme = useTheme();
-  const sideNav =
-    scroll > height / 2 &&
-    width > Number(theme.mediaQuery?.mediaMinMedium?.replace("px", ""));
-
-  const showFixedBackground =
-    scroll > height / 2 &&
-    width < Number(theme.mediaQuery?.mediaMinMedium?.replace("px", ""));
   return (
-    <styles.HeaderContainer
-      background={background}
-      showFixedBackground={showFixedBackground}
-    >
+    <styles.HeaderContainer background={background}>
       <styles.HeaderContent color={linksColor} maxWidth={maxWidth}>
         <div style={{ display: "grid", placeContent: "center" }}>
           <NextLink href="/">
             <a href={"/"}>
-              <Logo />
+              <styles.LogoImageContainer width={logoWidth} height={logoHeight}>
+                <Image
+                  src={logo?.filename ?? ""}
+                  // alt={image?.alt || ""}
+                  layout="fill"
+                  objectFit={"contain"}
+                />
+              </styles.LogoImageContainer>
             </a>
           </NextLink>
         </div>
-        <styles.HeaderLinks isOpen={isOpen} showOnSide={sideNav}>
+        <styles.HeaderLinks isOpen={isOpen} background={background}>
           {links?.map((link, i) => (
             <NextLink href={link.link?.cached_url} key={i}>
               <styles.HeaderLink
@@ -93,16 +93,21 @@ const Header = ({
                 color={linksColor}
                 onClick={() => setIsOpen(false)}
               >
-                <styles.HeaderLinkIcon showOnSide={isOpen}>
-                  <styles.Imagee
-                    showOnSide={isOpen}
-                    src={link.icon?.filename ?? ""}
-                    // alt={image?.alt || ""}
-                    layout="fill"
-                    objectFit={"contain"}
-                  />
-                </styles.HeaderLinkIcon>
-                <styles.HeaderLinkLabel showOnSide={isOpen}>
+                {link.icon?.filename && (
+                  <styles.HeaderLinkIcon showOnSide={isOpen}>
+                    <styles.Imagee
+                      showOnSide={isOpen}
+                      src={link.icon?.filename ?? ""}
+                      // alt={image?.alt || ""}
+                      layout="fill"
+                      objectFit={"contain"}
+                    />
+                  </styles.HeaderLinkIcon>
+                )}
+                <styles.HeaderLinkLabel
+                  showOnSide={isOpen}
+                  hasIcon={Boolean(link.icon?.filename)}
+                >
                   {link.label}
                 </styles.HeaderLinkLabel>
               </styles.HeaderLink>
@@ -151,29 +156,7 @@ const Header = ({
           <styles.MidLine open={isOpen} color={"#D5DEDE"} />
           <styles.BottomLine open={isOpen} color={"#D5DEDE"} />
         </styles.MobileMenuContainer>
-        <styles.HeaderQuickLinks isOpen={isOpen} showOnSide={sideNav}>
-          {links?.map((link) => (
-            <NextLink href={link.link?.cached_url}>
-              <styles.HeaderLink
-                href={link.link?.cached_url}
-                color={linksColor}
-              >
-                <styles.HeaderLinkIcon showOnSide={sideNav}>
-                  <styles.Imagee
-                    showOnSide={sideNav}
-                    src={link.icon?.filename ?? ""}
-                    // alt={image?.alt || ""}
-                    layout="fill"
-                    objectFit={"contain"}
-                  />
-                </styles.HeaderLinkIcon>
-                <styles.HeaderLinkLabel showOnSide={sideNav}>
-                  {link.label}
-                </styles.HeaderLinkLabel>
-              </styles.HeaderLink>
-            </NextLink>
-          ))}
-        </styles.HeaderQuickLinks>
+
         <styles.Overlay isOpen={isOpen} onClick={() => setIsOpen(false)} />
       </styles.HeaderContent>
     </styles.HeaderContainer>

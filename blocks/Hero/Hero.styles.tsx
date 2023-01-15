@@ -1,6 +1,9 @@
 import styled, { keyframes, css } from "styled-components";
 export type THeroContainer = {
   backgroundImage?: string;
+  display?: string;
+  alignItems?: string;
+  justifyContent?: string;
 };
 const slightFlip = keyframes`
   0%{
@@ -22,9 +25,13 @@ const slightFlipMobile = keyframes`
 `;
 export const HeroWrapper = styled.div<THeroContainer>`
   background-image: url(${({ backgroundImage }) => backgroundImage});
+  ${({ backgroundImage }) =>
+    backgroundImage &&
+    `
   background-repeat: no-repeat;
   background-size: 100% 100%;
   width: 100%;
+  `}
 `;
 
 export const HeroContainer = styled.div<THeroContainer>`
@@ -34,15 +41,7 @@ export const HeroContainer = styled.div<THeroContainer>`
   min-height: 100vh;
   padding: 0 24px 0;
   padding-top: 60px;
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 20px;
-
-  @media (min-width: ${({ theme }) => theme.mediaQuery.mediaMinMedium}) {
-    display: grid;
-    padding: 0 64px 0;
-    grid-template-columns: 1fr 1fr;
-  }
+  ${({ display }) => display && `display: ${display}`};
 `;
 
 export const HeroImage = styled.div`

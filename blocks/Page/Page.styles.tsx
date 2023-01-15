@@ -32,7 +32,7 @@ export const PageChildrenContainer = styled.div<TPageContainer>`
   max-width: ${(props) => (props.maxWidth ? `${props.maxWidth}px` : "unset")};
   margin: 0 auto;
   /* background: ${({ background }) => background ?? "#16171a"}; */
-  margin: 0 24px 24px;
+  margin: 0 24px;
   min-height: 100vh;
   padding: 64px 24px;
   border-radius: 4px;

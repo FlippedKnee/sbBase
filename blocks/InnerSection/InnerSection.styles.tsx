@@ -7,16 +7,21 @@ export type TInnerSectionContainer = TLayoutStyles & {
   alignSelf?: string;
   flex?: string;
   wrap?: boolean;
+  mobileFlexDirection?: string;
 };
 
 export const InnerSectionContainer = styled.div<TInnerSectionContainer>`
   ${LayoutStyles}
   flex-basis: ${({ width }) => width ?? "100%"};
   display: ${({ display }) => display ?? "block"};
-  ${({ flexDirection }) => `flex-direction: ${flexDirection}`};
+  ${({ flexDirection, mobileFlexDirection }) =>
+    `flex-direction: ${mobileFlexDirection ?? flexDirection}`};
   max-height: 100%;
   align-self: ${({ alignSelf }) => alignSelf ?? "unset"};
   /* margin: 0 auto; */
   flex: ${({ flex }) => flex ?? "unset"};
   ${({ wrap }) => wrap && `flex-wrap: wrap`};
+  @media (min-width: ${(props) => props.theme.mediaQuery.mediaMinSmall}) {
+    ${({ flexDirection }) => `flex-direction: ${flexDirection}`};
+  }
 `;
