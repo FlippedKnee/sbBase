@@ -20,6 +20,7 @@ export type TImageBlock = BlokItem & {
   mobileWidth?: string;
   mobileMaxWidth?: string;
   mobileMaxHeight?: string;
+  borderRadius?: string
 };
 
 const ImageBlock = ({
