@@ -2,32 +2,47 @@ import styled from "styled-components";
 
 type TImageAndTextContainer = {
   reverse?: boolean;
+  alignText?: string;
+  justifyText?: string;
+  borderRadius?: string;
+  height?: string;
+  width?: string;
 };
 
 export const ImageAndTextContainer = styled.div<TImageAndTextContainer>`
   display: grid;
-  grid-template-rows: ${({ reverse }) => (reverse ? "0.5fr 1fr" : "1fr 0.5fr")};
-  grid-template-columns: 1fr;
-  @media (min-width: ${({ theme }) => theme.mediaQuery.mediaMinSmall}) {
-    display: flex;
-    flex-direction: ${({ reverse }) => (reverse ? "row-reverse" : "row")};
-    justify-content: space-around;
-  }
+  grid-template-rows: ${(props) => props?.height ?? "1fr"};
+  grid-template-columns: ${(props) => props?.width ?? "1fr"};
+  overflow: hidden;
+  width: ${(props) => props?.width ?? "auto"};
+  ${({ borderRadius }) =>
+    borderRadius &&
+    `
+    border-radius: ${borderRadius};
+    overflow: hidden;
+  `}
 `;
 
 export const ImgContainer = styled.div<TImageAndTextContainer>`
-  grid-area: ${({ reverse }) => (reverse ? "1/1/2/2" : "1/1/3/2")};
+  grid-area: 1/1/1/1;
   z-index: 1;
-  max-width: clamp(300px, 20vw, 50%);
-  align-self: ${({ reverse }) => (reverse ? "start" : "end")};
-  justify-self: ${({ reverse }) => (reverse ? "start" : "end")};
-  @media (min-width: ${({ theme }) => theme.mediaQuery.mediaMinSmall}) {
-    max-width: clamp(50%, 4.5vw, 500px);
-  }
+  align-self: center;
+  justify-self: center;
+  ${({ borderRadius }) =>
+    borderRadius &&
+    `
+    border-radius: ${borderRadius};
+    overflow: hidden;
+  `}
 `;
 export const TextContainer = styled.div<TImageAndTextContainer>`
-  grid-area: ${({ reverse }) => (reverse ? "1/1/3/2" : "1/1/2/2")};
+  grid-area: 1/1/1/1;
   z-index: 2;
-  align-self: ${({ reverse }) => (reverse ? "end" : "start")};
-  justify-self: center;
+  align-self: ${({ alignText }) => alignText};
+  justify-self: ${({ justifyText }) => justifyText};
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: ${({ justifyText }) => justifyText};
+  align-items: ${({ alignText }) => alignText};
 `;

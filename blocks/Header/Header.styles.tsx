@@ -13,6 +13,7 @@ type THeaderContainer = {
 type TShowOnSide = {
   showOnSide?: boolean;
   hasIcon?: boolean;
+  hoverColor?: string;
 };
 
 export const HeaderContainer = styled.div<THeaderContainer>`
@@ -169,7 +170,7 @@ export const HeaderLinkLabel = styled.span<TShowOnSide>`
   }
 
   &:hover {
-    color: #e0cc81;
+    color: ${(props) => props.hoverColor};
   }
 `;
 export const HeaderLink = styled.a<THeaderContainer>`

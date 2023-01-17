@@ -14,6 +14,7 @@ type StyledImageProps = {
   mobileMaxWidth?: string;
   mobileMaxHeight?: string;
   animate?: boolean;
+  fullWidth?: boolean;
   borderRadius?: string;
 } & TLayoutStyles;
 
@@ -27,8 +28,8 @@ const slightFlip = keyframes`
 `;
 export const ImageBlockContainer = styled.div<StyledImageProps>`
   position: relative;
-  aspect-ratio: ${({ imageAspectRatioMobile, imageAspectRatio }) =>
-    imageAspectRatioMobile || imageAspectRatio || "4 / 3"};
+  /* aspect-ratio: ${({ imageAspectRatioMobile, imageAspectRatio }) =>
+    imageAspectRatioMobile || imageAspectRatio || "4 / 3"}; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,6 +53,13 @@ export const ImageBlockContainer = styled.div<StyledImageProps>`
           ${slightFlip} 3000ms ease-in-out infinite alternate
         `
       : ""}; /* rotate: 45deg; */
+
+  ${({ fullWidth }) =>
+    fullWidth &&
+    `  > span {
+    width: 100% !important;
+  };`}
+
   @media (min-width: 991px) {
     display: none;
   }

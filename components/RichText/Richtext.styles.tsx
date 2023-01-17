@@ -8,10 +8,12 @@ type RichTextStyledProps = {
   marginLeft?: number;
   marginRight?: number;
   maxWidth?: number;
-  fontSize?: number;
+  fontSize?: string;
   fontWeight?: string;
   linebreakHeight?: number;
   fontFamily?: string;
+  noWrap?: boolean;
+  lineHeight?: string;
 };
 
 export const RichTextContainer = styled.div<RichTextStyledProps>`
@@ -23,14 +25,29 @@ export const RichTextContainer = styled.div<RichTextStyledProps>`
   margin-bottom: ${(props) => props.marginBottom ?? 0}px;
   margin-left: ${(props) => props.marginLeft ?? 0}px;
   margin-right: ${(props) => props.marginRight ?? 0}px;
+  ${({ noWrap }) => noWrap && `white-space: nowrap`};
   ${(props) =>
     props.maxWidth &&
     `
     max-width: ${props.maxWidth}px;`}
   > * {
     font-weight: ${(props) => props.fontWeight ?? "normal"};
-    font-size: ${(props) => props.fontSize}px;
+    font-size: ${(props) =>
+      props.fontSize?.split(",")?.[1] ?? props.fontSize?.split(",")?.[0]}px;
     color: ${(props) => props.textColor ?? "#000"};
+    ${(props) =>
+      props?.lineHeight &&
+      `line-height: ${
+        props?.lineHeight?.split(",")?.[1] ?? props?.lineHeight?.split(",")?.[0]
+      }px`}
+  }
+  @media (min-width: ${(props) => props.theme.mediaQuery.mediaMinSmall}) {
+    > * {
+      font-size: ${(props) => props.fontSize?.split(",")[0]}px;
+      ${(props) =>
+        props?.lineHeight &&
+        `line-height: ${props.lineHeight?.split(",")[0]}px`}
+    }
   }
 `;
 

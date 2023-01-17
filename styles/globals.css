@@ -26,3 +26,8 @@ ol {
 a {
   cursor: pointer;
 }
+
+.keen-slider__slide{
+  max-width: 100px !important;
+  width: 100px !important;
+}

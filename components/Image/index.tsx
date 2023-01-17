@@ -14,9 +14,11 @@ const ImageComponent = ({ image, fill, height, width, contain }: TImage) => {
   const imageSizeArray = image?.filename
     ? image?.filename?.split("/")[5].split("x")
     : undefined;
-  const url = image?.filename;
+  const url =
+    image?.filename +
+    `/m/${imageSizeArray ? imageSizeArray[0] : 1000}x0/filters:quality(75)`;
 
-  const blurUrl = `${image?.filename}/m/60x60`;
+  const blurUrl = `${image?.filename}/m/200x200`;
   //To rid warnings that images smaller than 40px should not have 'blur' placholder
   const sizeCheck = () => imageSizeArray?.some((item) => Number(item) > 40);
 
@@ -27,8 +29,6 @@ const ImageComponent = ({ image, fill, height, width, contain }: TImage) => {
         alt={image?.alt || ""}
         layout="fill"
         objectFit={contain ? "contain" : "cover"}
-        placeholder={sizeCheck() ? "blur" : undefined}
-        blurDataURL={blurUrl}
       />
     ) : (
       <Image
@@ -36,8 +36,6 @@ const ImageComponent = ({ image, fill, height, width, contain }: TImage) => {
         alt={image?.alt || ""}
         layout="intrinsic"
         objectFit={contain ? "contain" : "cover"}
-        placeholder={sizeCheck() ? "blur" : undefined}
-        blurDataURL={blurUrl}
         width={width || imageSizeArray[0]}
         height={height || imageSizeArray[1]}
       />

@@ -8,6 +8,7 @@ export type TInnerSectionContainer = TLayoutStyles & {
   flex?: string;
   wrap?: boolean;
   mobileFlexDirection?: string;
+  mobileCenter?: boolean;
 };
 
 export const InnerSectionContainer = styled.div<TInnerSectionContainer>`
@@ -21,6 +22,12 @@ export const InnerSectionContainer = styled.div<TInnerSectionContainer>`
   /* margin: 0 auto; */
   flex: ${({ flex }) => flex ?? "unset"};
   ${({ wrap }) => wrap && `flex-wrap: wrap`};
+  ${({ mobileCenter }) =>
+    mobileCenter &&
+    `
+    align-items:center;
+    justify-content: center;
+    `}
   @media (min-width: ${(props) => props.theme.mediaQuery.mediaMinSmall}) {
     ${({ flexDirection }) => `flex-direction: ${flexDirection}`};
   }

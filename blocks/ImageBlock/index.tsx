@@ -20,7 +20,8 @@ export type TImageBlock = BlokItem & {
   mobileWidth?: string;
   mobileMaxWidth?: string;
   mobileMaxHeight?: string;
-  borderRadius?: string
+  borderRadius?: string;
+  fullWidth?: boolean;
 };
 
 const ImageBlock = ({
@@ -39,6 +40,7 @@ const ImageBlock = ({
   maxWidth,
   borderRadius,
   animate,
+  fullWidth,
 }: TImageBlock) => {
   return (
     <styles.ImageBlockLayoutContainer
@@ -55,11 +57,11 @@ const ImageBlock = ({
         objectPosition={objectPosition}
         imageAspectRatioMobile={aspectRatioMobile}
         animate={animate}
+        fullWidth={fullWidth}
       >
         <ImageComponent
-          image={mobileImage ? mobileImage : image}
+          image={mobileImage?.filename ? mobileImage : image}
           fill={fill}
-          contain
         />
       </styles.ImageBlockContainer>
       <styles.DesktopImageBlockContainer
@@ -68,8 +70,9 @@ const ImageBlock = ({
         objectPosition={objectPosition}
         imageAspectRatioMobile={aspectRatioMobile}
         animate={animate}
+        fullWidth={fullWidth}
       >
-        <ImageComponent image={image} fill={fill} contain />
+        <ImageComponent image={image} fill={fill} />
       </styles.DesktopImageBlockContainer>
     </styles.ImageBlockLayoutContainer>
   );
