@@ -22,6 +22,9 @@ type THeader = {
   footerLinks?: THeaderLinks[];
   logoWidth?: string;
   logoHeight?: string;
+  headerChangeColor?: string;
+  headerChangeColor2?: string;
+  background2?: string;
 };
 
 const Header = ({
@@ -34,11 +37,21 @@ const Header = ({
   logoHeight,
   logoWidth,
   hoverColor,
+  headerChangeColor2,
+  headerChangeColor,
+  background2,
 }: THeader) => {
   const [scroll, height, width] = useScrollPosition();
   const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <styles.HeaderContainer background={background}>
+    <styles.HeaderContainer
+      background={background}
+      background2={
+        scroll >= Number(headerChangeColor2) ? background2 : undefined
+      }
+      showFixedBackground={scroll >= Number(headerChangeColor)}
+    >
       <styles.HeaderContent color={linksColor} maxWidth={maxWidth}>
         <div style={{ display: "grid", placeContent: "center" }}>
           <NextLink href="/">

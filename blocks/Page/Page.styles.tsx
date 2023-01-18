@@ -11,7 +11,7 @@ export type TPageContainer = {
 };
 
 export const PageContainer = styled.div<TPageContainer>`
-  ${(props) => props.background && `background-color: ${props.background}`};
+  ${(props) => props.background && `background: ${props.background}`};
 
   padding: ${(props) => {
     const x = props.paddingHorizontal ?? 0;

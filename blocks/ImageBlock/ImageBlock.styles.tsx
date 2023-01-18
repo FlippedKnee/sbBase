@@ -79,6 +79,7 @@ export const ImageBlockLayoutContainer = styled.div<StyledImageProps>`
   max-height: ${({ mobileMaxHeight }) => mobileMaxHeight ?? "100%"};
   overflow: hidden;
   ${({ borderRadius }) => `border-radius: ${borderRadius}`};
+  border: 1px solid black;
   @media (min-width: 991px) {
     width: ${({ width }) => width ?? "100%"};
     max-width: ${({ maxWidth }) => maxWidth ?? "100%"};

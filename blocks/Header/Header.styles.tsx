@@ -8,6 +8,7 @@ type THeaderContainer = {
   showFixedBackground?: boolean;
   showOnSide?: boolean;
   isOpen?: boolean;
+  background2?: string;
 };
 
 type TShowOnSide = {
@@ -18,11 +19,12 @@ type TShowOnSide = {
 
 export const HeaderContainer = styled.div<THeaderContainer>`
   position: fixed;
-  ${({ showFixedBackground, background }) =>
+  ${({ showFixedBackground, background, background2 }) =>
     showFixedBackground &&
     `
-    background: ${background};
-    box-shadow: 0 0 20px #000;
+    background: ${background2 ? background2 : background};
+    box-shadow: 0 0 30px #464646;
+    transition: background 500ms ease;
   `}
 
   top: 0;
