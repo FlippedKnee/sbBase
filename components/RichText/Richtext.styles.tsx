@@ -14,13 +14,14 @@ type RichTextStyledProps = {
   fontFamily?: string;
   noWrap?: boolean;
   lineHeight?: string;
+  textAlignMobile?: string;
 };
 
 export const RichTextContainer = styled.div<RichTextStyledProps>`
   width: 100%;
   ${({ fontFamily }) => fontFamily && `font-family: ${fontFamily}`};
   color: ${(props) => props.textColor ?? "#000"};
-  text-align: ${(props) => props.textAlign ?? "initial"};
+  text-align: ${(props) => props.textAlignMobile ?? "initial"};
   margin-top: ${(props) => (props.marginTop ? props.marginTop : 0)}px;
   margin-bottom: ${(props) => props.marginBottom ?? 0}px;
   margin-left: ${(props) => props.marginLeft ?? 0}px;
@@ -46,7 +47,8 @@ export const RichTextContainer = styled.div<RichTextStyledProps>`
       font-size: ${(props) => props.fontSize?.split(",")[0]}px;
       ${(props) =>
         props?.lineHeight &&
-        `line-height: ${props.lineHeight?.split(",")[0]}px`}
+        `line-height: ${props.lineHeight?.split(",")[0]}px`};
+      text-align: ${(props) => props.textAlign ?? "initial"};
     }
   }
 `;

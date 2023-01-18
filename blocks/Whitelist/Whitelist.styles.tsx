@@ -5,7 +5,6 @@ export const WLContainer = styled.div`
   padding: 32px;
   min-height: 500px;
   margin: 100px auto;
-  background: #16171a;
   display: flex;
   flex-direction: column;
   gap: 36px;
@@ -89,8 +88,9 @@ export const VerifiedText = styled.span`
 export const VerifyBox = styled.div`
   padding: 36px;
   border-radius: 28px;
-  background: linear-gradient(145deg, #18191c, #141517);
-  box-shadow: 5px 5px 0px #121315, -5px -5px 0px #1a1b1f;
+  /* background: linear-gradient(145deg, #18191c, #141517); */
+  /* box-shadow: 5px 5px 0px #121315, -5px -5px 0px #1a1b1f; */
+  border: 1px solid #d7d7d7;
   max-width: 300px;
 `;
 

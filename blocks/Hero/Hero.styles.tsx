@@ -1,9 +1,13 @@
 import styled, { keyframes, css } from "styled-components";
+import { mapSpacingToTheme } from "../../helpers/spacings";
 export type THeroContainer = {
   backgroundImage?: string;
   display?: string;
   alignItems?: string;
   justifyContent?: string;
+  marginTop?: string;
+  backgroundSize?: string;
+  backgroundCenter?: boolean;
 };
 const slightFlip = keyframes`
   0%{
@@ -25,13 +29,18 @@ const slightFlipMobile = keyframes`
 `;
 export const HeroWrapper = styled.div<THeroContainer>`
   background-image: url(${({ backgroundImage }) => backgroundImage});
-  ${({ backgroundImage }) =>
+  margin-top: ${(props) => mapSpacingToTheme(props?.marginTop, true)}px;
+  ${({ backgroundImage, backgroundSize, backgroundCenter }) =>
     backgroundImage &&
     `
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  width: 100%;
+    background-repeat: no-repeat;
+    background-size: ${backgroundSize};
+    width: 100%;
+    ${backgroundCenter && `background-position: center;`}
   `}
+  @media (min-width: ${({ theme }) => theme.mediaQuery.mediaMinMedium}) {
+    margin-top: ${(props) => mapSpacingToTheme(props?.marginTop)}px;
+  }
 `;
 
 export const HeroContainer = styled.div<THeroContainer>`

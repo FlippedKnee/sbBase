@@ -24,7 +24,6 @@ const Page = (props: TPage) => {
   const header = useDynamicComponent<TBlockElement>(props.header, elements);
   const footer = useDynamicComponent<TBlockElement>(props.footer, elements);
   const pageRef = useRef();
-
   return (
     <styles.PageContainer
       background={props?.background}
@@ -35,14 +34,17 @@ const Page = (props: TPage) => {
     >
       {header}
       {hero}
-      <styles.PageChildrenContainer
-        maxWidth={props?.maxWidth}
-        background={props?.background}
-      >
-        {body}
-        {footer}
-        {props?.children}
-      </styles.PageChildrenContainer>
+      {/* @ts-ignore */}
+      {body?.length && (
+        <styles.PageChildrenContainer
+          maxWidth={props?.maxWidth}
+          background={props?.background}
+        >
+          {body}
+          {footer}
+          {props?.children}
+        </styles.PageChildrenContainer>
+      )}
     </styles.PageContainer>
   );
 };

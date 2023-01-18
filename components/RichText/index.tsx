@@ -16,6 +16,7 @@ export type RichTextProps = {
   linebreakHeight?: number;
   noWrap?: boolean;
   lineHeight?: string;
+  textAlignMobile?: string;
 };
 
 const RichText = ({
@@ -32,6 +33,7 @@ const RichText = ({
   noWrap,
   linebreakHeight,
   lineHeight,
+  textAlignMobile,
   ...props
 }: RichTextProps) => {
   return (
@@ -47,6 +49,7 @@ const RichText = ({
       marginRight={marginRight}
       noWrap={noWrap}
       lineHeight={lineHeight}
+      textAlignMobile={textAlignMobile}
       {...props}
     >
       {render(text, {

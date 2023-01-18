@@ -22,12 +22,17 @@ export const InnerSectionContainer = styled.div<TInnerSectionContainer>`
   /* margin: 0 auto; */
   flex: ${({ flex }) => flex ?? "unset"};
   ${({ wrap }) => wrap && `flex-wrap: wrap`};
-  ${({ mobileCenter }) =>
-    mobileCenter &&
-    `
+  justify-content: ${({ justifyContent }) => justifyContent ?? "flex-start"};
+  align-items: ${({ alignItems }) => alignItems ?? "flex-start"};
+  @media (max-width: ${(props) => props.theme.mediaQuery.mediaMinSmall}) {
+    ${({ mobileCenter }) =>
+      mobileCenter &&
+      `
     align-items:center;
     justify-content: center;
     `}
+  }
+
   @media (min-width: ${(props) => props.theme.mediaQuery.mediaMinSmall}) {
     ${({ flexDirection }) => `flex-direction: ${flexDirection}`};
   }

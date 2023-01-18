@@ -20,14 +20,17 @@ import WhiteListVerified from "./WhiteListVerified";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 
-type TWhiteList = BlokItem & {};
+type TWhiteList = BlokItem & {
+  discordText?: string;
+  twitterText?: string;
+};
 
 type TVerified = {
   id?: string;
   name?: string;
 };
 
-const WhiteList = ({ body }: TWhiteList) => {
+const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
   const bodyContent = useDynamicComponent(body, elements);
 
   const [discordVerified, setDiscordVerified] = useState<TVerified | null>(
@@ -168,9 +171,7 @@ const WhiteList = ({ body }: TWhiteList) => {
         <styles.VerifyBox>
           <styles.VerifyType color={"#fff"}>
             <span>{discordVerified && <CheckMark color={"green"} />}</span>
-            <p style={{ fontSize: "13px" }}>
-              Join the Alea3 Discord and have the Member role
-            </p>
+            <p style={{ fontSize: "13px" }}>{discordText}</p>
           </styles.VerifyType>
           <Spacer height={12} />
           <styles.SocialButtonContainer>
@@ -206,7 +207,7 @@ const WhiteList = ({ body }: TWhiteList) => {
           <Spacer height={32} />
           <styles.VerifyType color={"#fff"}>
             <span>{twitterVerified && <CheckMark color={"green"} />}</span>
-            Follow Alea3 on twitter
+            {twitterText}
           </styles.VerifyType>
           <Spacer height={8} />
           <styles.SocialButtonContainer>

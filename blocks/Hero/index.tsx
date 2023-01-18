@@ -19,6 +19,9 @@ export type THero = BlokItem & {
   display?: string;
   alignItems?: string;
   justifyContent?: string;
+  marginTop?: string;
+  backgroundSize?: string;
+  backgroundCenter?: boolean;
 };
 
 const Hero = ({
@@ -28,6 +31,9 @@ const Hero = ({
   justifyContent,
   display,
   alignItems,
+  marginTop,
+  backgroundSize,
+  backgroundCenter,
 }: THero) => {
   const textContent = useDynamicComponent(text, elements);
   const [initial, setIniital] = useState(false);
@@ -35,7 +41,12 @@ const Hero = ({
     if (!initial) setIniital(true);
   }, []);
   return (
-    <styles.HeroWrapper backgroundImage={backgroundImage?.filename}>
+    <styles.HeroWrapper
+      marginTop={marginTop}
+      backgroundImage={backgroundImage?.filename}
+      backgroundSize={backgroundSize}
+      backgroundCenter={backgroundCenter}
+    >
       <styles.HeroContainer
         display={display}
         alignItems={alignItems}
