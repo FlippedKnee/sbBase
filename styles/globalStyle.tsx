@@ -10,14 +10,14 @@ export const GlobalStyle = createGlobalStyle`
   text-decoration: none;
   }
   * {
-    font-family: 'Inter', sans-serif;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
     font-style: normal;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 16px;
     line-height: 19px;
     margin: 0;
     padding: 0;
-    letter-spacing: .03em;
+    letter-spacing: .05em;
   }
 
   p{
@@ -25,9 +25,9 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   h1{
-    font-family: 'Poppins', sans-serif;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 800;
     font-size: 40px;
     line-height: 50px;
     
@@ -37,9 +37,9 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
   h2{
-    font-family: 'Poppins' , sans-serif;
+    font-family: 'M PLUS Rounded 1c' , sans-serif;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 800;
     font-size: 32px;
     line-height: 40px;
     
@@ -49,9 +49,9 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
   h3{
-    font-family: 'Poppins', sans-serif;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 800;
     font-size: 24px;
     line-height: 30px;
     
@@ -61,9 +61,9 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
   h4{
-    font-family: 'Poppins', sans-serif;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 800;
     font-size: 20px;
     line-height: 25px;
     
@@ -73,9 +73,9 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
   h5{
-    font-family: 'Poppins';
+    font-family: 'M PLUS Rounded 1c';
     font-style: normal;
-    font-weight: 600;
+    font-weight: 800;
     font-size: 18px;
     line-height: 22px;
     

@@ -22,6 +22,7 @@ export type TImageBlock = BlokItem & {
   mobileMaxHeight?: string;
   borderRadius?: string;
   fullWidth?: boolean;
+  border?: boolean;
 };
 
 const ImageBlock = ({
@@ -40,6 +41,7 @@ const ImageBlock = ({
   maxWidth,
   borderRadius,
   animate,
+  border,
   fullWidth,
 }: TImageBlock) => {
   return (
@@ -50,6 +52,7 @@ const ImageBlock = ({
       mobileMaxWidth={mobileMaxWidth ?? maxWidth}
       borderRadius={borderRadius}
       mobileMaxHeight={mobileMaxHeight ?? maxHeight}
+      border={border}
     >
       <styles.ImageBlockContainer
         imageAspectRatio={aspectRatio}
