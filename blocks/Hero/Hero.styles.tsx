@@ -30,6 +30,7 @@ const slightFlipMobile = keyframes`
 export const HeroWrapper = styled.div<THeroContainer>`
   background-image: url(${({ backgroundImage }) => backgroundImage});
   margin-top: ${(props) => mapSpacingToTheme(props?.marginTop, true)}px;
+  position: relative;
   ${({ backgroundImage, backgroundSize, backgroundCenter }) =>
     backgroundImage &&
     `

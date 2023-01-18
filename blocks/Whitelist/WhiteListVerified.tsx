@@ -30,7 +30,7 @@ const WhiteListVerified = ({
       }
     }
   };
-  return !discordVerified && !twitterVerified ? (
+  return discordVerified && twitterVerified ? (
     <>
       <styles.WLContainer>
         <h3 style={{ color: "#fff" }}>

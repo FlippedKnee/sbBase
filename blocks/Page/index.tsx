@@ -35,7 +35,7 @@ const Page = (props: TPage) => {
       {header}
       {hero}
       {/* @ts-ignore */}
-      {body?.length && (
+      {body?.length ? (
         <styles.PageChildrenContainer
           maxWidth={props?.maxWidth}
           background={props?.background}
@@ -44,7 +44,7 @@ const Page = (props: TPage) => {
           {footer}
           {props?.children}
         </styles.PageChildrenContainer>
-      )}
+      ) : null}
     </styles.PageContainer>
   );
 };

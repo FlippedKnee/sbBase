@@ -242,7 +242,7 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
           <div style={{ color: "#fa7e7e", fontSize: "13px" }}>{error}</div>
         )}
       </styles.WLContainer>
-      {!showWl && (
+      {showWl && (
         <WhiteListVerified
           discordVerified={discordVerified}
           twitterVerified={twitterVerified}

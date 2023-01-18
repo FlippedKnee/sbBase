@@ -9,12 +9,15 @@ type THeaderContainer = {
   showOnSide?: boolean;
   isOpen?: boolean;
   background2?: string;
+  headerFontWeight?: string;
 };
 
 type TShowOnSide = {
   showOnSide?: boolean;
   hasIcon?: boolean;
   hoverColor?: string;
+  headerFontWeight?: string;
+  fontSize?: string;
 };
 
 export const HeaderContainer = styled.div<THeaderContainer>`
@@ -160,6 +163,8 @@ export const HeaderLinkLabel = styled.span<TShowOnSide>`
   margin-left: ${({ showOnSide, hasIcon }) =>
     !hasIcon ? 0 : showOnSide ? "20px" : "8px"};
   position: relative;
+  font-weight: ${(props) => props.headerFontWeight} !important;
+  font-size: ${(props) => props.fontSize}px;
   &::after {
     content: "";
     width: 0;
@@ -183,7 +188,7 @@ export const HeaderLink = styled.a<THeaderContainer>`
   align-items: center;
   font-family: "Poppins", sans-serif;
   font-style: normal;
-  font-weight: 400;
+  font-weight: ${(props) => props.headerFontWeight} !important;
   font-size: 18px;
   line-height: 50px;
   position: relative;

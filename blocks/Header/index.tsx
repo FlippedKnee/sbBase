@@ -25,6 +25,8 @@ type THeader = {
   headerChangeColor?: string;
   headerChangeColor2?: string;
   background2?: string;
+  headerFontWeight?: string;
+  fontSize?: string;
 };
 
 const Header = ({
@@ -40,10 +42,11 @@ const Header = ({
   headerChangeColor2,
   headerChangeColor,
   background2,
+  headerFontWeight,
+  fontSize,
 }: THeader) => {
   const [scroll, height, width] = useScrollPosition();
   const [isOpen, setIsOpen] = useState(false);
-
   return (
     <styles.HeaderContainer
       background={background}
@@ -74,6 +77,7 @@ const Header = ({
                 href={link.link?.cached_url}
                 color={linksColor}
                 onClick={() => setIsOpen(false)}
+                headerFontWeight={headerFontWeight}
               >
                 {link.icon?.filename && (
                   <styles.HeaderLinkIcon showOnSide={isOpen}>
@@ -90,6 +94,8 @@ const Header = ({
                   showOnSide={isOpen}
                   hasIcon={Boolean(link.icon?.filename)}
                   hoverColor={hoverColor}
+                  headerFontWeight={headerFontWeight}
+                  fontSize={fontSize}
                 >
                   {link.label}
                 </styles.HeaderLinkLabel>
