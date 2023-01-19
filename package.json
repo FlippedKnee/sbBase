@@ -33,6 +33,7 @@
     "react": "18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",
+    "react-parallax-tilt": "^1.7.89",
     "react-spring": "^9.5.5",
     "storyblok-rich-text-react-renderer": "^2.6.1",
     "styled-components": "^5.3.3",

@@ -30,6 +30,7 @@ const WhiteList = dynamic(() => import("./Whitelist"));
 const LinkButton = dynamic(() => import("./LinkButton"));
 const PartnersGrid = dynamic(() => import("./PartnersGrid"));
 const Slider = dynamic(() => import("./Slider"));
+const TiltCard = dynamic(() => import("./TiltCard"));
 
 export type ElementType<T> = {
   [key: string]: ComponentType<T>;
@@ -59,6 +60,7 @@ export const elements: ElementType<TBlockElement> = {
   linkButton: LinkButton,
   partnersGrid: PartnersGrid,
   slider: Slider,
+  tiltCard: TiltCard,
 };
 
 export type TBlockElement = any;

@@ -255,9 +255,12 @@ export const HeaderFooterLink = styled.a`
 `;
 
 export const MobileMenuContainer = styled.div`
-  display: grid;
-  place-content: center;
-  cursor: pointer;
+  display: none;
+  @media (max-width: ${({ theme }) => theme.mediaQuery.mediaMinSmall}) {
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+  }
 `;
 
 export const MenuLine = styled.div<TMenuLine>`
