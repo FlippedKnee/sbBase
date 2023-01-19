@@ -25,6 +25,8 @@ type TTiltCard = BlokItem & {
   mobileHeight?: string;
   borderColor?: string;
   borderRadius?: string;
+  maxHeight?: string;
+  maxWidth?: string;
 };
 
 const TiltCard = ({
@@ -43,6 +45,8 @@ const TiltCard = ({
   mobileHeight,
   borderRadius,
   borderColor,
+  maxHeight,
+  maxWidth,
 }: TTiltCard) => {
   const Content = useDynamicComponent(content, elements);
   return (
@@ -63,6 +67,8 @@ const TiltCard = ({
         height={height}
         borderColor={borderColor}
         borderRadius={borderRadius}
+        maxHeight={maxHeight}
+        maxWidth={maxWidth}
       >
         {Content}
       </Card>
@@ -80,6 +86,8 @@ type TTiltCardStyled = {
   mobileWidth?: string;
   borderColor?: string;
   borderRadius?: string;
+  maxHeight?: string;
+  maxWidth?: string;
 };
 
 export const Card = styled.div<TTiltCardStyled>`
@@ -88,6 +96,8 @@ export const Card = styled.div<TTiltCardStyled>`
   /* height: ${({ mobileHeight, height }) => `${mobileHeight}px`}; */
   /* width: ${({ mobileWidth, width }) => `${mobileWidth}px`}; */
   /* background-size: 100% auto; */
+  max-height: ${(props) => props.maxHeight}px;
+  max-width: ${(props) => props.maxWidth}px;
   background-repeat: no-repeat;
   aspect-ratio: 435 / 710;
   overflow: hidden;

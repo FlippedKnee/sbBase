@@ -23,6 +23,7 @@ type TSlider = {
   autoPlay?: boolean;
   loop?: boolean;
   slidesPerView?: number | "auto";
+  largeDesktopSlidesPerView?: number | "auto";
   spacing?: number;
   mobileSlidesPerView?: number | "auto";
   sliderText?: Blok;
@@ -43,6 +44,7 @@ export default function Slider({
   loop,
   slidesPerView,
   mobileSlidesPerView,
+  largeDesktopSlidesPerView,
   spacing,
   sliderText,
   origin,
@@ -58,6 +60,13 @@ export default function Slider({
     breakpoints: {
       "(min-width: 768px)": {
         slides: { perView: slidesPerView, spacing: spacing, origin: origin },
+      },
+      "(min-width: 1400px)": {
+        slides: {
+          perView: largeDesktopSlidesPerView ?? slidesPerView,
+          spacing: spacing,
+          origin: origin,
+        },
       },
     },
     slides: {
