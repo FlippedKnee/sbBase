@@ -26,6 +26,8 @@ type TSlider = {
   spacing?: number;
   mobileSlidesPerView?: number | "auto";
   sliderText?: Blok;
+  origin?: number | "center" | "auto";
+  mobileOrigin?: number | "center" | "auto";
 };
 const animation = { duration: 10000, easing: (t: number) => t };
 
@@ -43,6 +45,8 @@ export default function Slider({
   mobileSlidesPerView,
   spacing,
   sliderText,
+  origin,
+  mobileOrigin,
 }: TSlider) {
   const itemContent = useDynamicComponent(items, elements);
   const sliderTextContent = useDynamicComponent(sliderText, elements);
@@ -53,10 +57,14 @@ export default function Slider({
     drag: !autoPlay,
     breakpoints: {
       "(min-width: 768px)": {
-        slides: { perView: slidesPerView, spacing: spacing, origin: "center" },
+        slides: { perView: slidesPerView, spacing: spacing, origin: origin },
       },
     },
-    slides: { perView: mobileSlidesPerView, spacing: spacing },
+    slides: {
+      perView: mobileSlidesPerView,
+      spacing: spacing,
+      origin: mobileOrigin,
+    },
 
     created(s) {
       if (autoPlay) {
