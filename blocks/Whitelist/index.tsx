@@ -177,7 +177,7 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
           <styles.SocialButtonContainer>
             <NextLink
               href={
-                "https://discord.com/api/oauth2/authorize?client_id=1047585770099183619&redirect_uri=https%3A%2F%2Falea3-flippedknee.vercel.app%2Fwhitelist&response_type=token&scope=guilds.join%20guilds%20identify%20guilds.members.read"
+                "https://discord.com/api/oauth2/authorize?client_id=1067545708321845269&redirect_uri=https%3A%2F%2Fsb-base.vercel.app%2Fen%2Fwhitelist&response_type=token&scope=guilds.join%20identify%20guilds.members.read"
               }
               // for localhost test
               // href={
@@ -186,7 +186,7 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
             >
               <a
                 href={
-                  "https://discord.com/api/oauth2/authorize?client_id=1047585770099183619&redirect_uri=https%3A%2F%2Falea3-flippedknee.vercel.app%2Fwhitelist&response_type=token&scope=guilds.join%20guilds%20identify%20guilds.members.read"
+                  "https://discord.com/api/oauth2/authorize?client_id=1067545708321845269&redirect_uri=https%3A%2F%2Fsb-base.vercel.app%2Fen%2Fwhitelist&response_type=token&scope=guilds.join%20identify%20guilds.members.read"
                 }
                 // for localhost test
                 // href={

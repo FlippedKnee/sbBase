@@ -19,4 +19,5 @@ export type StoryblokLink = {
   id?: string
   linktype?: string
   url?: string
+  target?: "_blank"
 }

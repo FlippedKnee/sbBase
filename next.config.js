@@ -10,8 +10,8 @@ const nextConfig = {
     STORYBLOK: 'IjZn7WiNrOwUaAHmtXJaawtt',
     NEXTAUTH_URL:"http://localhost:3000",
     NEXTAUTH_SECRET:"2MEMzGYnxs4nfurJignZRtE+T99Zk8MsAwkUYm9xpl0=",
-    TWITTER_CONSUMER_KEY:'C17qKAFtDwwTbQGdZI9XwcvdC',
-    TWITTER_CONSUMER_SECRET:'P50V28He8zGyqa59s1ODzCMpvcJwMtBkY0EZ9SMjv77jIStnpZ',
+    TWITTER_CONSUMER_KEY:'nVPx8gZnA8mAMoqQl5fzE0Ke9',
+    TWITTER_CONSUMER_SECRET:'2aNXgjTuKxMsNWwp2M9qkONI4BOww4PiZRjSL7QWZdqBnrXbd6',
     FB_API:"AIzaSyBWTDqyYV-svx5O5TThL7mcQ-1HT2HOt0Q",
     FB_DOMAIN: "alea3-6f538.firebaseapp.com",
     FB_PROJECTID: "alea3-6f538",
@@ -22,7 +22,7 @@ const nextConfig = {
     ALCHEMY: "https://eth-goerli.g.alchemy.com/v2/r0hPr09fHymuXddvS7ioacs7oAHkqqSZ",
     P:"0729e3a8394fa00b09a9702c55054efd7075d367c1ff1e532ca337a79382ebaa",
     S: "0x31bd94887a209337BE80E52B4f8badcA0c8d780C",
-    DISCORD: "123"
+    DISCORD: "1MDJYvV4RZQEu8D_aF3c08kGDsEq1K0i"
   },
   compiler: {
     styledComponents: true

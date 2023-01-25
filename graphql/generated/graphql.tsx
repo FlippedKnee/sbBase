@@ -28,6 +28,17 @@ export type Alternate = {
   slug: Scalars['String'];
 };
 
+export type Asset = {
+  __typename?: 'Asset';
+  alt?: Maybe<Scalars['String']>;
+  copyright?: Maybe<Scalars['String']>;
+  filename: Scalars['String'];
+  focus?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+};
+
 export type ContentItem = {
   __typename?: 'ContentItem';
   alternates?: Maybe<Array<Maybe<Alternate>>>;
@@ -139,6 +150,7 @@ export type PageComponent = {
   _editable?: Maybe<Scalars['String']>;
   _uid?: Maybe<Scalars['String']>;
   background?: Maybe<Scalars['String']>;
+  backgroundImage?: Maybe<Asset>;
   body?: Maybe<Scalars['BlockScalar']>;
   component?: Maybe<Scalars['String']>;
   footer?: Maybe<Scalars['BlockScalar']>;

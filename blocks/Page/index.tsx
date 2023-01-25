@@ -24,13 +24,14 @@ const Page = (props: TPage) => {
   const header = useDynamicComponent<TBlockElement>(props.header, elements);
   const footer = useDynamicComponent<TBlockElement>(props.footer, elements);
   const pageRef = useRef();
+
   return (
     <styles.PageContainer
       background={props?.background}
       paddingHorizontal={props?.paddingHorizontal}
       paddingVertical={props?.paddingVertical}
-      backgroundImage={props.backgroundImage?.filename}
       {...props}
+      backgroundImage={props.backgroundImage?.filename}
     >
       {header}
       {hero}

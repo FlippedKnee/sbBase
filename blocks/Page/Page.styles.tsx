@@ -7,11 +7,22 @@ export type TPageContainer = {
   paddingVertical?: number;
   footerOffset?: number;
   headerOffset?: number;
-  // backgroundImage?: string;
+  backgroundImage?: string;
 };
 
 export const PageContainer = styled.div<TPageContainer>`
-  ${(props) => props.background && `background: ${props.background}`};
+  ${(props) =>
+    props.background &&
+    `background: ${props.backgroundImage ?? props.background}`};
+  ${(props) => {
+    return (
+      props.backgroundImage &&
+      `background: url(${props.backgroundImage});
+    background-size: cover;
+    
+    `
+    );
+  }};
 
   padding: ${(props) => {
     const x = props.paddingHorizontal ?? 0;

@@ -8,6 +8,7 @@ export type TInnerSectionContainer = TLayoutStyles & {
   flex?: string;
   wrap?: boolean;
   mobileFlexDirection?: string;
+  borderRadius?: string;
   mobileCenter?: boolean;
 };
 
@@ -24,6 +25,8 @@ export const InnerSectionContainer = styled.div<TInnerSectionContainer>`
   ${({ wrap }) => wrap && `flex-wrap: wrap`};
   justify-content: ${({ justifyContent }) => justifyContent ?? "flex-start"};
   align-items: ${({ alignItems }) => alignItems ?? "flex-start"};
+  ${({ borderRadius }) =>
+    borderRadius && `overflow:hidden; border-radius:${borderRadius}`};
   @media (max-width: ${(props) => props.theme.mediaQuery.mediaMinSmall}) {
     ${({ mobileCenter }) =>
       mobileCenter &&
