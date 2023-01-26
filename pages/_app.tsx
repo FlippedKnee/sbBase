@@ -46,6 +46,12 @@ function App({ Component, pageProps }: AppProps<TApp & Session>) {
           href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Urbanist:wght@100;300;400;500;600&display=swap"
           rel="stylesheet"
         />
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"
+          integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        ></script>
       </Head>
       {/* @ts-ignore */}
       <SessionProvider session={pageProps?.session}>
