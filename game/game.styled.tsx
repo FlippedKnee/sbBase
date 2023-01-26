@@ -24,7 +24,7 @@ export const Power = styled.div<TPower>`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 44px;
+  font-size: 64px;
   color: white;
   animation: ${slideIn} 500ms ease-in-out forwards;
 `;
