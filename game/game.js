@@ -9,6 +9,7 @@ class Player {
     this.ctx = ctx
     this.velocity = {x : 0 , y : 0}
     this.canvas = canvas
+    this.level = 1
   }
 
   draw (){
@@ -40,13 +41,14 @@ class Player {
   }
 }
 class Enemy {
-  constructor(ctx, x, y, radius, color, velocity) {
+  constructor(ctx, x, y, radius, color, velocity, multiplier) {
     this.x = x 
     this.y = y
     this.radius = radius
     this.color = color
     this.velocity = velocity
     this.ctx = ctx
+    this.multiplier = multiplier
   }
 
   draw (){
@@ -59,8 +61,8 @@ class Enemy {
   
   update() {
     this.draw()
-    this.x +=   this.velocity.x
-    this.y +=  this.velocity.y
+    this.x +=   this.velocity.x * this.multiplier
+    this.y +=  this.velocity.y * this.multiplier
   }
 }
 const friction = 0.99
@@ -139,17 +141,24 @@ const Canvas = props => {
     let animationFrameId
     const x = canvas.width /2
     const y = canvas.height /2
+    let level = 1
     //Our draw came here
     const player = new Player(context, x, y, 10, '#fff', canvas)
 
     const projectiles = []
     const enemies = []
     const particles = []
-    const spawnEnemies = () => {
+    const timer = 1000 - 100 * player.level
+    const spawnEnemies = (level) => {
       setInterval(() => {
         context.clearRect(0, 0, canvas.width, canvas.height)
-
-        const radius =  Math.random() * (30 -4) + 4
+        let level = player.level > 1 ? Math.random() * 40:0
+        if(player.level > 10 ){
+          level = Math.random() * 60
+        }
+ 
+        const radius =  Math.random() * (30 -4) + 4 + level
+ 
         let x
         let y
         if(Math.random() < 0.5){
@@ -168,10 +177,24 @@ const Canvas = props => {
           x: Math.cos(angle),
           y: Math.sin(angle)
         }
-        enemies.push(new Enemy(context ,x,y,radius,color,vel))
+        let multiplier = 1
+        if(player.level > 10 ){
+          multiplier = Math.random() > 0.5 ? 5 : 1
+
+        }
+        enemies.push(new Enemy(context ,x,y,radius,color,vel, multiplier))
       },1000)
     }
     spawnEnemies()
+    if(player.level > 10){
+      if(Math.random() > 0.5){
+        spawnEnemies()
+      }
+    }
+    if(player.level > 20){
+      spawnEnemies()
+    }
+    
     
     const render = () => {
       frameCount++
@@ -226,6 +249,7 @@ const Canvas = props => {
    
        console.log('end game')
        window.cancelAnimationFrame(animationFrameId)
+       player.level=1
        setPlay(false)
 
       }
@@ -234,7 +258,7 @@ const Canvas = props => {
         const distanceBetweenEnemy = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y)
         // HIT ENEMY
         if(distanceBetweenEnemy - enemy.radius - projectile.radius < 1){
-
+      
           for(let i = 0; i < enemy.radius * 2; i++){
             particles.push(
               new Particle(
@@ -262,6 +286,8 @@ const Canvas = props => {
             enemies.splice(iE, 1)
             projectiles.splice(iP, 1)
             setScore(score => score + 1)
+            player.level += 1
+         
           }, 0)
           }
          
@@ -342,7 +368,7 @@ const Canvas = props => {
   
   if (typeof window !== "undefined") {
     return <div>
-      <div style={{color: '#fff', position: 'fixed', top:0,left:0, userSelect:'none'}}>GAME SCORE: ${score}</div>
+      <div style={{color: '#fff', position: 'fixed', top:0,left:0, userSelect:'none'}}> GAME SCORE: ${score}</div>
       {!play && 
       <div style={{
         padding: '20px',
