@@ -222,6 +222,7 @@ const Canvas = props => {
   const [ play, setPlay] = useState(false)
 
   useEffect(() => {
+    console.log('render')
     if(!play) return
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
@@ -238,52 +239,73 @@ const Canvas = props => {
     const enemies = []
     const particles = []
     const powerUps = []
-    const timer = 1000 - 100 * player.level
-    const spawnEnemies = (level) => {
+    let powerShots = 0
+    let time = 0
+    console.log('player.level 123 ', player.level )
+    const spawnEnemies = () => {
       setInterval(() => {
         context.clearRect(0, 0, canvas.width, canvas.height)
-        let level = player.level > 1 ? Math.random() * 40:0
-        if(player.level > 10 ){
-          level = Math.random() * 60
-        }
- 
-        const radius =  Math.random() * (30 -4) + 4 + level
- 
-        let x
-        let y
-        if(Math.random() < 0.5){
+        const makeEnemy = () => {
 
-           x= Math.random() < 0.5 ?  0 - radius : canvas.width + radius 
-           y= Math.random() * canvas.height
-        } else {
-          x= Math.random() * canvas.width
-          y=  Math.random() < 0.5 ?  0 - radius : canvas.height + radius 
+          let level = player.level > 1 ? Math.random() * 40:0
+          console.log(player.level, 'PLAYER LEVEL INSIDE SPAWN ENEMIES')
+          if(player.level > 10 ){
+            level = Math.random() * 60
+          }
+          
+          const radius =  Math.random() * (30 -4) + 4 + level
+          
+          let x
+          let y
+          if(Math.random() < 0.5){
+            
+            x= Math.random() < 0.5 ?  0 - radius : canvas.width + radius
+            y= Math.random() * canvas.height + radius  
+          } else {
+            x= Math.random() * canvas.width + radius  
+            y=  Math.random() < 0.5 ?  0 - radius : canvas.height + radius
+          }
+          const color =`hsl(${Math.random() * 360}, 50%, 50%)`
+          
+          const angle = Math.atan2( player.y - y,  player.x -x)
+          
+          const vel = {
+            x: Math.cos(angle),
+            y: Math.sin(angle)
+          }
+          let multiplier = 1
+          if(player.level > 10 ){
+            multiplier = Math.random() > 0.5 ? 3 : 1
+            
+          }
+          return {
+            x,
+            y,
+            radius,
+            color,
+            vel,
+            multiplier
+          }
         }
-        const color =`hsl(${Math.random() * 360}, 50%, 50%)`
-
-        const angle = Math.atan2( player.y - y,  player.x -x)
+    
+        const e = makeEnemy()
+        enemies.push(new Enemy(context ,e.x,e.y,e.radius,e.color,e.vel, e.multiplier))
+        if(player.level > 5){
+          console.log('level 2')
+          const e2 = makeEnemy()
+          enemies.push(new Enemy(context ,e2.x,e2.y,e2.radius,e2.color,e2.vel, e2.multiplier))
+        }
+        if(player.level > 20){
+          console.log('level 3')
+          const e2 = makeEnemy()
+          enemies.push(new Enemy(context ,e2.x,e2.y,e2.radius,e2.color,e2.vel, e2.multiplier))
+        }
      
-        const vel = {
-          x: Math.cos(angle),
-          y: Math.sin(angle)
-        }
-        let multiplier = 1
-        if(player.level > 10 ){
-          multiplier = Math.random() > 0.5 ? 5 : 1
-
-        }
-        enemies.push(new Enemy(context ,x,y,radius,color,vel, multiplier))
+  
       },1000)
     }
     spawnEnemies()
-    if(player.level > 10){
-      if(Math.random() > 0.5){
-        spawnEnemies()
-      }
-    }
-    if(player.level > 20){
-      spawnEnemies()
-    }
+  
 
     // spawn power up
 
@@ -315,6 +337,7 @@ const Canvas = props => {
           x: Math.cos(angle),
           y: Math.sin(angle)
         }
+
         let multiplier = 1
         if(player.level > 10 ){
           multiplier = Math.random() > 0.5 ? 5 : 1
@@ -339,7 +362,7 @@ const Canvas = props => {
       animationFrameId = window.requestAnimationFrame(render)
       context.fillStyle= 'rgba(0,0,0,0.1)'
       context.fillRect(0, 0, canvas.width, canvas.height)
-
+ 
       player.draw()
       player.update()
         // create projectiles
@@ -386,6 +409,7 @@ const Canvas = props => {
    
          player.power=powerUp.power
          currentPower = powerUp.power
+         powerShots = 0
          setPower(powerUp.power)
          
   
@@ -394,15 +418,23 @@ const Canvas = props => {
       
       enemies.forEach((enemy, iE) => {
       enemy.update()
+     
       if(enemy.x + enemy.radius < 0 || 
         enemy.x - enemy.radius > canvas.width ||
         enemy.y + enemy.radius > canvas.height ||
         enemy.y - enemy.radius > canvas.height 
-        
         ){
-        setTimeout(() => {
-          enemies.splice(iE, 1)
-        }, 0)
+          if( enemy.x + enemy.radius >= canvas.width + enemy.radius + 50  || enemy.x - enemy.radius <= 90 + enemy.radius + 50){
+            enemy.velocity.x = -enemy.velocity.x;
+          }
+          // console.log('enemy.y - enemy.radius', enemy.y - enemy.radius)
+          if( enemy.y + enemy.radius >= canvas.height + enemy.radius  + 50|| enemy.y - enemy.radius <= 90 + enemy.radius + 50   ){
+            
+            enemy.velocity.y = -enemy.velocity.y;
+          }
+        // setTimeout(() => {
+        //   enemies.splice(iE, 1)
+        // }, 0)
       }
       const distanceBetweenPlayer = Math.hypot(player.x - enemy.x, player.y - enemy.y)
       // ON HIT
@@ -461,7 +493,11 @@ const Canvas = props => {
     // SHOOT
     window.addEventListener('click',(e) => {
       const angle = Math.atan2(e.clientY - player.y, e.clientX - player.x)
-
+      powerShots++
+      if(powerShots >= 40){
+        currentPower = PowerUp.regular
+        setPower(PowerUp.regular)
+      }
       const vel = {
         x: Math.cos(angle) * 4 ,
         y: Math.sin(angle) * 4  
@@ -551,14 +587,27 @@ const Canvas = props => {
       window.cancelAnimationFrame(animationFrameId)
     }
   }, [play])
+  // useEffect(() =>{
+  //   console.log('power rerended', power)
+  //   if(power && power?.name !== [power?.name]){
+  //     setShowPower(true)
+  //     setTimeout(() => {
+  //       setShowPower(false)
+  //     },500)
+  //   }
+   
+  // },[power])
+
   useEffect(() =>{
-    if(power){
+console.log('render power')
+    if(power && power?.name !== [power?.name]){
       setShowPower(true)
     }
     setTimeout(() => {
       setShowPower(false)
     },500)
   },[power])
+
   if (typeof window !== "undefined") {
     return <div>
       <div style={{color: '#fff', position: 'fixed', top:0,left:0, userSelect:'none'}}> GAME SCORE: ${score} power: {power.name}</div>

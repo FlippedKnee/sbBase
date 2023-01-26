@@ -27,4 +27,5 @@ export const Power = styled.div<TPower>`
   font-size: 64px;
   color: white;
   animation: ${slideIn} 500ms ease-in-out forwards;
+  user-select: none;
 `;
