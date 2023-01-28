@@ -14,7 +14,7 @@ export default async (req:any, res:any) => {
         if(!token){
           return res.status(200).json({
             status: 'Ok',
-            data: 'NO TOKEN ERROR'
+            data: `no TOKEN ERROR ${process.env.NEXTAUTH_SECRET}, THIS IS THE SECRET, ${process.env.TWITTER_CONSUMER_KEY }: TWITT`
           });
         }
         const client = await new Twitter({
