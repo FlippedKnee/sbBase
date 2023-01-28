@@ -11,13 +11,7 @@ export default async (req:any, res:any) => {
         
         const token:any = await getToken({ req,   secret: process.env.NEXTAUTH_SECRET
         });
-        if(!token){
-          return res.status(200).json({
-            status: 'Ok',
-            data: `no TOKEN ERROR ${process.env.NEXTAUTH_SECRET}, THIS IS THE SECRET, ${process.env.TWITTER_CONSUMER_KEY }: TWITT`,
-            token: token
-          });
-        }
+ 
         const client = await new Twitter({
           subdomain: 'api',
           consumer_key: process.env.TWITTER_CONSUMER_KEY as string,
@@ -27,12 +21,7 @@ export default async (req:any, res:any) => {
           access_token_key: token?.token?.account?.oauth_token ?? token?.token?.token?.account?.oauth_token,
           access_token_secret: token?.token?.account?.oauth_token_secret?? token?.token?.token?.account?.oauth_token_secret,
       });client
-      if(!token){
-        return res.status(200).json({
-          status: 'Ok',
-          data: 'NO CLIENT ERROR'
-        });
-      }
+ 
         const following = await client.post("friendships/create", {
           screen_name: "Alea3NFT"
         });

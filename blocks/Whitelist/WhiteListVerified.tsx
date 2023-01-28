@@ -103,7 +103,7 @@ const WhiteListVerified = ({
                 ) : (
                   <>
                     <CustomButton
-                      borderColor="#f4f4f4"
+                      borderColor={"#f4f4f4"}
                       label={"Cancel"}
                       textColor={"#f4f4f4"}
                       borderRadius={100}
@@ -111,9 +111,9 @@ const WhiteListVerified = ({
                       disabled={loading}
                     />
                     <CustomButton
-                      background="#575555"
+                      background={"#f4f4f4"}
                       label={"Join whitelist"}
-                      textColor={"#f4f4f4"}
+                      textColor={"#575555"}
                       disabled={!adx || !twitterVerified || loading}
                       borderRadius={100}
                       onClick={() => addToWl()}

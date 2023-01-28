@@ -107,7 +107,6 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
       method: "get",
     });
     const twitterStatus = await res?.json();
-    console.log("res", twitterStatus);
     if (res.status === 200) {
       // const twitterStatus = await res.json();
       if (twitterStatus?.data?.id) {
@@ -244,6 +243,7 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
                 height={47}
                 justify={"space-between"}
                 background={"#2a2525"}
+                disabled={!twitterVerified}
                 borderColor={
                   walletConnected && accountsHasBeenUsed?.id !== "ADX"
                     ? "#25f5b0"
@@ -278,6 +278,7 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
                 fullWidth
                 fontSize={13}
                 height={47}
+                disabled={!walletConnected}
                 justify={"space-between"}
                 background={"#2a2525"}
                 borderColor={
@@ -338,7 +339,7 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
       </styles.WLContainer>
       {showWl && (
         <WhiteListVerified
-          adx={adx}
+          adx={"adx"}
           twitterVerified={twitterVerified}
           open={showWl}
           closeModal={() => setShowWl(false)}

@@ -4,8 +4,8 @@ let authUser = null
 export default NextAuth({
   providers: [
     TwitterProvider({
-      clientId: 'nVPx8gZnA8mAMoqQl5fzE0Ke9',
-      clientSecret: '2aNXgjTuKxMsNWwp2M9qkONI4BOww4PiZRjSL7QWZdqBnrXbd6', 
+      clientId: process.env.TWITTER_CONSUMER_KEY,
+      clientSecret: process.env.TWITTER_CONSUMER_SECRET, 
       session: { jwt: true },
      
     }),
