@@ -106,10 +106,10 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
     const res = await fetch("/api/twitter", {
       method: "get",
     });
-    const twitterStatus = await res.json();
+    const twitterStatus = await res?.json();
     console.log("res", twitterStatus);
     if (res.status === 200) {
-      const twitterStatus = await res.json();
+      // const twitterStatus = await res.json();
       if (twitterStatus?.data?.id) {
         setTwitterVerified(twitterStatus.data);
         setTwCookie(
@@ -186,7 +186,6 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
       checkIfAlreadyUsed();
     }
   }, [twitterVerified?.id]);
-  console.log("twitterVerified", twitterVerified);
   return (
     <>
       <styles.WLContainer>
