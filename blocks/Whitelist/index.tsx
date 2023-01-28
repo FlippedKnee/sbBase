@@ -339,7 +339,7 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
       </styles.WLContainer>
       {showWl && (
         <WhiteListVerified
-          adx={"adx"}
+          adx={adx}
           twitterVerified={twitterVerified}
           open={showWl}
           closeModal={() => setShowWl(false)}
