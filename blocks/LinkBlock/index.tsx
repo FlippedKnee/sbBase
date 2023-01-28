@@ -11,7 +11,6 @@ type TLinkBlock = {
 
 const LinkBlock = ({ link, child }: TLinkBlock) => {
   const ChildContent = useDynamicComponent(child, elements);
-  console.log("123", ChildContent, child);
   return (
     <NextLink href={link?.cached_url} target={link?.target}>
       <a href={link?.cached_url}>{ChildContent}</a>

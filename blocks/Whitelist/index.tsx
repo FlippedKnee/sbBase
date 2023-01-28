@@ -19,6 +19,12 @@ import { CheckMark, DiscordSvg, TwitterSvg } from "../../components/Icons";
 import WhiteListVerified from "./WhiteListVerified";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
+import {
+  useAddress,
+  useMetamask,
+  useContract,
+  useSigner,
+} from "@thirdweb-dev/react";
 
 type TWhiteList = BlokItem & {
   discordText?: string;
@@ -30,8 +36,12 @@ type TVerified = {
   name?: string;
 };
 
+const message = "please sign this shit";
+
 const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
   const bodyContent = useDynamicComponent(body, elements);
+  const signer = useSigner();
+  const connectWithMetamask = useMetamask();
 
   const [discordVerified, setDiscordVerified] = useState<TVerified | null>(
     null
@@ -39,57 +49,59 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
   const [twitterVerified, setTwitterVerified] = useState<TVerified | null>(
     null
   );
+  const [walletConnected, setWalletConnected] = useState(false);
   const [hasClickedTwitter, setHasClickedTwitter] = useState(false);
 
   const [error, setError] = useState<any>(null);
   const [discordParams, setDiscordParams] = useState<any>(null);
   const router = useRouter();
   const { data: session } = useSession();
-  const [dcCookie, setDcCookie, removeDcCookie] = useCookies<string, any>([
-    "dcVerify",
-  ]);
+  // const [dcCookie, setDcCookie, removeDcCookie] = useCookies<string, any>([
+  //   "dcVerify",
+  // ]);
   const [twCookie, setTwCookie, removeTwCookie] = useCookies<string, any>([
     "twVerify",
   ]);
   const [showWl, setShowWl] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [accountsHasBeenUsed, setAccountHasBeenUsed] = useState(false);
+  const [accountsHasBeenUsed, setAccountHasBeenUsed] =
+    useState<TVerified | null>(null);
+  const [adx, setAdx] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (window) {
-      const fragment = new URLSearchParams(window?.location?.hash?.slice(1));
-      const [accessToken, tokenType] = [
-        fragment.get("access_token"),
-        fragment.get("token_type"),
-      ];
-      if (accessToken) {
-        setDiscordParams({
-          accessToken,
-          tokenType,
-        });
-      }
-    }
-  }, [router?.pathname]);
+  // useEffect(() => {
+  //   if (window) {
+  //     const fragment = new URLSearchParams(window?.location?.hash?.slice(1));
+  //     const [accessToken, tokenType] = [
+  //       fragment.get("access_token"),
+  //       fragment.get("token_type"),
+  //     ];
+  //     if (accessToken) {
+  //       setDiscordParams({
+  //         accessToken,
+  //         tokenType,
+  //       });
+  //     }
+  //   }
+  // }, [router?.pathname]);
 
-  const fetchDiscord = async () => {
-    const res = await fetch("/api/oauth?q=" + discordParams?.accessToken, {
-      method: "get",
-    });
-    // @ts-ignore
-    if (res.status === 200) {
-      const discordRes = await res.json();
-      setDiscordVerified(discordRes?.data);
-      setDcCookie(
-        "dcVerify",
-        JSON.stringify({
-          id: discordRes?.data,
-        })
-      );
-    } else {
-      setDiscordVerified(null);
-      setError("Could not get your account at this time, please try again");
-    }
-  };
+  // const fetchDiscord = async () => {
+  //   const res = await fetch("/api/oauth?q=" + discordParams?.accessToken, {
+  //     method: "get",
+  //   });
+  //   // @ts-ignore
+  //   if (res.status === 200) {
+  //     const discordRes = await res.json();
+  //     setDiscordVerified(discordRes?.data);
+  //     setDcCookie(
+  //       "dcVerify",
+  //       JSON.stringify({
+  //         id: discordRes?.data,
+  //       })
+  //     );
+  //   } else {
+  //     setDiscordVerified(null);
+  //     setError("Could not get your account at this time, please try again");
+  //   }
+  // };
   const fetchTwitter = async () => {
     const res = await fetch("/api/twitter", {
       method: "get",
@@ -117,16 +129,16 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
     }
   };
 
-  useEffect(() => {
-    if (dcCookie?.dcVerify) {
-      const { dcVerify } = dcCookie;
-      setDiscordVerified(dcVerify);
-      return;
-    }
-    if (discordParams) {
-      fetchDiscord();
-    }
-  }, [discordParams, dcCookie]);
+  // useEffect(() => {
+  //   if (dcCookie?.dcVerify) {
+  //     const { dcVerify } = dcCookie;
+  //     setDiscordVerified(dcVerify);
+  //     return;
+  //   }
+  //   // if (discordParams) {
+  //   //   fetchDiscord();
+  //   // }
+  // }, [discordParams, dcCookie]);
 
   useEffect(() => {
     if (twCookie?.twVerify) {
@@ -143,109 +155,193 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
   const wlRef = collection(db, "wl");
 
   const checkIfAlreadyUsed = async () => {
-    let userFound = 0;
-    if (twitterVerified?.id && discordVerified) {
-      const q = query(
-        wlRef,
-        where("discord", "==", discordVerified),
-        where("twitter", "==", twitterVerified?.id)
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        userFound++;
-      });
+    if (twitterVerified?.id) {
+      // where("discord", "==", discordVerified),
+      const qT = query(wlRef, where("twitter", "==", twitterVerified?.id));
+      const querySnapshotTwitter = await getDocs(qT);
+      if (querySnapshotTwitter?.docs?.length) {
+        setAccountHasBeenUsed({
+          id: "TWITTER",
+          name: "Twitter account is already in use",
+        });
+        return;
+      }
     }
-    if (userFound) {
-      setAccountHasBeenUsed(true);
-    } else {
+    if (adx) {
+      const qA = query(wlRef, where("adress", "==", adx));
+      const querySnapshotAdx = await getDocs(qA);
+      if (querySnapshotAdx?.docs?.length) {
+        setAccountHasBeenUsed({ id: "ADX", name: "Address already in use" });
+        return;
+      }
+    }
+    if (adx && twitterVerified?.id && walletConnected) {
       setShowWl(true);
     }
   };
 
+  useEffect(() => {
+    if (twitterVerified?.id && adx) {
+      checkIfAlreadyUsed();
+    }
+  }, [twitterVerified?.id]);
+  console.log("twitterVerified", twitterVerified);
   return (
     <>
       <styles.WLContainer>
         {bodyContent}
 
         <styles.VerifyBox>
-          <styles.VerifyType color={"#fff"}>
-            <span>{discordVerified && <CheckMark color={"green"} />}</span>
-            <p style={{ fontSize: "13px" }}>{discordText}</p>
-          </styles.VerifyType>
-          <Spacer height={12} />
-          <styles.SocialButtonContainer>
-            <NextLink
-              href={
-                "https://discord.com/api/oauth2/authorize?client_id=1067545708321845269&redirect_uri=https%3A%2F%2Fsb-base.vercel.app%2Fen%2Fwhitelist&response_type=token&scope=guilds.join%20identify%20guilds.members.read"
-              }
-              // for localhost test
-              // href={
-              //   "https://discord.com/api/oauth2/authorize?client_id=1038877253012050023&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fwhitelist&response_type=token&scope=guilds%20guilds.join%20identify"
-              // }
+          <div>
+            <p
+              style={{
+                fontSize: "16px",
+                textAlign: "center",
+                color: "#2a2525",
+              }}
             >
-              <a
-                href={
-                  "https://discord.com/api/oauth2/authorize?client_id=1067545708321845269&redirect_uri=https%3A%2F%2Fsb-base.vercel.app%2Fen%2Fwhitelist&response_type=token&scope=guilds.join%20identify%20guilds.members.read"
+              Follow these steps to join our whitelist
+            </p>
+            <Spacer height={16} />
+            <styles.SocialButtonContainer>
+              <CustomButton
+                fullWidth
+                fontSize={13}
+                justify={"space-between"}
+                height={47}
+                background={"#2a2525"}
+                borderColor={
+                  twitterVerified?.id && accountsHasBeenUsed?.id !== "TWITTER"
+                    ? "#25f5b0"
+                    : "#2a2a2a"
                 }
-                // for localhost test
-                // href={
-                //   "https://discord.com/api/oauth2/authorize?client_id=1038877253012050023&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fwhitelist&response_type=token&scope=guilds%20guilds.join%20identify"
-                // }
-              >
-                <CustomButton
-                  background="#5865F2"
-                  label={"Discord"}
-                  textColor={"#fff"}
-                  borderRadius={100}
-                  onClick={() => setError(null)}
-                  icon={<DiscordSvg />}
-                />
-              </a>
-            </NextLink>
-          </styles.SocialButtonContainer>
-          <Spacer height={32} />
-          <styles.VerifyType color={"#fff"}>
-            <span>{twitterVerified && <CheckMark color={"green"} />}</span>
-            {twitterText}
-          </styles.VerifyType>
-          <Spacer height={8} />
-          <styles.SocialButtonContainer>
+                label={"1. Connect Twitter"}
+                textColor={
+                  twitterVerified?.id && accountsHasBeenUsed?.id !== "TWITTER"
+                    ? "#25f5b0"
+                    : "#f4f4f4"
+                }
+                onClick={() => {
+                  setHasClickedTwitter(true);
+                  signIn("twitter");
+                }}
+                borderRadius={100}
+                icon={
+                  twitterVerified?.id &&
+                  accountsHasBeenUsed?.id !== "TWITTER" ? (
+                    <CheckMark color="#25f5b0" />
+                  ) : (
+                    <TwitterSvg />
+                  )
+                }
+              />
+            </styles.SocialButtonContainer>
+            <Spacer height={16} />
+            <styles.SocialButtonContainer>
+              <CustomButton
+                fullWidth
+                fontSize={13}
+                height={47}
+                justify={"space-between"}
+                background={"#2a2525"}
+                borderColor={
+                  walletConnected && accountsHasBeenUsed?.id !== "ADX"
+                    ? "#25f5b0"
+                    : "#575555"
+                }
+                label={"2. Connect wallet"}
+                textColor={
+                  walletConnected && accountsHasBeenUsed?.id !== "ADX"
+                    ? "#25f5b0"
+                    : "#f4f4f4"
+                }
+                onClick={async () => {
+                  const metamask = await connectWithMetamask();
+                  if (
+                    !metamask.error ||
+                    metamask?.error?.name === "ConnectorAlreadyConnectedError"
+                  ) {
+                    setWalletConnected(true);
+                  }
+                }}
+                borderRadius={100}
+                icon={
+                  walletConnected && accountsHasBeenUsed?.id !== "ADX" ? (
+                    <CheckMark color="#25f5b0" />
+                  ) : null
+                }
+              />
+            </styles.SocialButtonContainer>
+            <Spacer height={16} />
+            <styles.SocialButtonContainer>
+              <CustomButton
+                fullWidth
+                fontSize={13}
+                height={47}
+                justify={"space-between"}
+                background={"#2a2525"}
+                borderColor={
+                  adx && accountsHasBeenUsed?.id !== "ADX"
+                    ? "#25f5b0"
+                    : "#2a2525"
+                }
+                label={"3. Sign wallet"}
+                textColor={
+                  adx && accountsHasBeenUsed?.id !== "ADX"
+                    ? "#25f5b0"
+                    : "#f4f4f4"
+                }
+                onClick={async () => {
+                  if (signer) {
+                    try {
+                      const signAdx = await signer.signMessage(message);
+                      if (signAdx) {
+                        const retrievedAdx = await signer.getAddress();
+                        setAdx(retrievedAdx);
+                      }
+                    } catch (e) {
+                      console.log(e);
+                    }
+                  }
+                }}
+                borderRadius={100}
+                icon={
+                  adx && accountsHasBeenUsed?.id !== "ADX" ? (
+                    <CheckMark color="#25f5b0" />
+                  ) : null
+                }
+              />
+            </styles.SocialButtonContainer>
+          </div>
+          {accountsHasBeenUsed && (
+            <span style={{ color: "#a90c0c" }}>
+              {accountsHasBeenUsed?.name}
+            </span>
+          )}
+          {error && (
+            <div style={{ color: "#a90c0c", fontSize: "13px" }}>{error}</div>
+          )}
+          <styles.ButtonContainer>
             <CustomButton
-              background="#55ACEE"
-              label={"Twitter"}
-              textColor={"#fff"}
-              onClick={() => {
-                setHasClickedTwitter(true);
-                signIn("twitter");
+              fullWidth
+              background={"#2a2525"}
+              label={"Sign up for whitelist"}
+              textColor={"#f4f4f4"}
+              onClick={async () => {
+                checkIfAlreadyUsed();
               }}
               borderRadius={100}
-              icon={<TwitterSvg />}
+              disabled={!adx || (!twitterVerified && !error)}
             />
-          </styles.SocialButtonContainer>
+          </styles.ButtonContainer>
         </styles.VerifyBox>
-
-        <CustomButton
-          background="#53CF9B"
-          label={"Continue"}
-          textColor={"#fff"}
-          disabled={!discordVerified || !twitterVerified}
-          borderRadius={100}
-          onClick={() => checkIfAlreadyUsed()}
-        />
-        {accountsHasBeenUsed && (
-          <span style={{ color: "red" }}>
-            Accounts is already used, please try different ones
-          </span>
-        )}
-        {error && (
-          <div style={{ color: "#fa7e7e", fontSize: "13px" }}>{error}</div>
-        )}
       </styles.WLContainer>
       {showWl && (
         <WhiteListVerified
-          discordVerified={discordVerified}
+          adx={adx}
           twitterVerified={twitterVerified}
+          open={showWl}
+          closeModal={() => setShowWl(false)}
         />
       )}
     </>

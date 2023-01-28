@@ -222,7 +222,6 @@ const Canvas = props => {
   const [ play, setPlay] = useState(false)
 
   useEffect(() => {
-    console.log('render')
     if(!play) return
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
@@ -241,14 +240,13 @@ const Canvas = props => {
     const powerUps = []
     let powerShots = 0
     let time = 0
-    console.log('player.level 123 ', player.level )
     const spawnEnemies = () => {
       setInterval(() => {
         context.clearRect(0, 0, canvas.width, canvas.height)
         const makeEnemy = () => {
 
           let level = player.level > 1 ? Math.random() * 40:0
-          console.log(player.level, 'PLAYER LEVEL INSIDE SPAWN ENEMIES')
+   
           if(player.level > 10 ){
             level = Math.random() * 60
           }
@@ -291,12 +289,12 @@ const Canvas = props => {
         const e = makeEnemy()
         enemies.push(new Enemy(context ,e.x,e.y,e.radius,e.color,e.vel, e.multiplier))
         if(player.level > 5){
-          console.log('level 2')
+       
           const e2 = makeEnemy()
           enemies.push(new Enemy(context ,e2.x,e2.y,e2.radius,e2.color,e2.vel, e2.multiplier))
         }
         if(player.level > 20){
-          console.log('level 3')
+     
           const e2 = makeEnemy()
           enemies.push(new Enemy(context ,e2.x,e2.y,e2.radius,e2.color,e2.vel, e2.multiplier))
         }
@@ -440,7 +438,7 @@ const Canvas = props => {
       // ON HIT
       if(distanceBetweenPlayer - enemy.radius - player.radius < 1){
    
-       console.log('end game')
+   
        window.cancelAnimationFrame(animationFrameId)
        player.level=1
        setPlay(false)
@@ -599,7 +597,7 @@ const Canvas = props => {
   // },[power])
 
   useEffect(() =>{
-console.log('render power')
+
     if(power && power?.name !== [power?.name]){
       setShowPower(true)
     }

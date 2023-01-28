@@ -6,6 +6,10 @@ type TButton = {
   borderColor?: string;
   disabled?: boolean;
   borderRadius?: number;
+  fullWidth?: boolean;
+  fontSize?: number;
+  height?: number;
+  justify?: string;
 };
 
 export const ButtonContainer = styled.div<TButton>`
@@ -13,17 +17,22 @@ export const ButtonContainer = styled.div<TButton>`
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   border-radius: ${({ borderRadius }) => borderRadius ?? 8}px;
   display: inline-flex;
-  justify-content: center;
   align-items: center;
+  justify-content: ${({ justify }) => justify ?? "center"};
   gap: 8px;
+  ${({ fullWidth }) => fullWidth && `width: 100%`};
+  ${({ height }) => height && `height: ${height}px`};
   background: ${({ background }) => background};
-  padding: 12px 24px;
+  padding: 10px 24px;
   color: ${({ color }) => color};
   ${({ disabled }) => disabled && `opacity: 0.5;`}
   ${({ borderColor }) =>
     borderColor &&
     borderColor?.length > 0 &&
     `border: 2px solid ${borderColor};`}
+    >span {
+    font-size: ${({ fontSize }) => fontSize ?? 16}px;
+  }
 `;
 
 export const ButtonIcon = styled.span`

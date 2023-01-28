@@ -26,7 +26,7 @@ export const ButtonContainer = styled.div<TButton>`
   background: ${({ background }) => background};
   padding: 8px 12px;
   color: ${({ color }) => color};
-  margin: 16px 0;
+  /* margin: 16px 0; */
   ${({ borderColor }) =>
     borderColor &&
     borderColor?.length > 0 &&
@@ -88,10 +88,13 @@ export const VerifiedText = styled.span`
 export const VerifyBox = styled.div`
   padding: 36px;
   border-radius: 28px;
-  /* background: linear-gradient(145deg, #18191c, #141517); */
-  /* box-shadow: 5px 5px 0px #121315, -5px -5px 0px #1a1b1f; */
-  border: 1px solid #d7d7d7;
-  max-width: 300px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 450px;
 `;
 
 export const Input = styled.textarea`

@@ -8,31 +8,52 @@ import NextLink from "../../components/NextLink";
 type TWLVerified = {
   discordVerified?: any;
   twitterVerified?: any;
+  sign?: string;
+  adx?: string | null;
+  open?: boolean;
+  closeModal: () => void;
 };
 
+const truncateString = (str: string) => {
+  if (str.length <= 8) {
+    return str;
+  } else {
+    return str.substring(0, 5) + "..." + str.substring(str.length - 4);
+  }
+};
 const WhiteListVerified = ({
   discordVerified,
   twitterVerified,
+  adx,
+  closeModal,
+  open,
 }: TWLVerified) => {
-  const [adx, setAdx] = useState("");
   const [modal, setModal] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const dbInstance = collection(db, "wl");
+  const [loading, setLoading] = useState(false);
   const addToWl = async () => {
-    if (twitterVerified && discordVerified) {
-      const doc = await addDoc(dbInstance, {
-        discord: discordVerified,
-        twitter: twitterVerified.id as any,
-        adress: adx,
-      });
-      if (doc) {
-        setHasSubmitted(true);
+    setLoading(true);
+    if (twitterVerified && adx) {
+      try {
+        const doc = await addDoc(dbInstance, {
+          twitter: twitterVerified.id as any,
+          twitterNick: twitterVerified?.name as any,
+          adress: adx,
+        });
+        if (doc) {
+          setHasSubmitted(true);
+        }
+        setLoading(false);
+      } catch (e) {
+        console.log(e);
+        setLoading(false);
       }
     }
   };
-  return discordVerified && twitterVerified ? (
+  return adx ? (
     <>
-      <styles.WLContainer>
+      {/* <styles.WLContainer>
         <h3 style={{ color: "#fff" }}>
           Enter your the address you want whitelisted
         </h3>
@@ -54,36 +75,51 @@ const WhiteListVerified = ({
           borderRadius={100}
           onClick={() => setModal(true)}
         />
-      </styles.WLContainer>
-      {modal && (
+      </styles.WLContainer> */}
+      {open && (
         <styles.Modal>
           {!hasSubmitted ? (
             <styles.ModalContent>
-              <p>You are about to add:</p>
+              <div>
+                <p>You are about to add:</p>
+                <Spacer height={2} />
 
-              <p style={{ textDecoration: "underline" }}>{adx}</p>
-              <Spacer height={8} />
+                <p style={{ textDecoration: "underline" }}>
+                  {truncateString(adx)}
+                </p>
+              </div>
+              <div>
+                <p>Twitter id:</p>
+                <Spacer height={2} />
+
+                <p>{twitterVerified?.name}</p>
+              </div>
               <p>to our whitelist, are you sure?</p>
-              <p>
-                You are only able to add one address per discord/twitter account
-              </p>
+              <p>You are only able to add one address per twitter account</p>
               <Spacer height={32} />
               <styles.ModalButtons>
-                <CustomButton
-                  background="#53CF9B"
-                  label={"Cancel"}
-                  textColor={"#fff"}
-                  borderRadius={100}
-                  onClick={() => setModal(false)}
-                />
-                <CustomButton
-                  background="#53CF9B"
-                  label={"Join whitelist"}
-                  textColor={"#fff"}
-                  disabled={!discordVerified || !twitterVerified}
-                  borderRadius={100}
-                  onClick={() => addToWl()}
-                />
+                {loading ? (
+                  <p>loading...</p>
+                ) : (
+                  <>
+                    <CustomButton
+                      borderColor="#f4f4f4"
+                      label={"Cancel"}
+                      textColor={"#f4f4f4"}
+                      borderRadius={100}
+                      onClick={() => closeModal()}
+                      disabled={loading}
+                    />
+                    <CustomButton
+                      background="#575555"
+                      label={"Join whitelist"}
+                      textColor={"#f4f4f4"}
+                      disabled={!adx || !twitterVerified || loading}
+                      borderRadius={100}
+                      onClick={() => addToWl()}
+                    />
+                  </>
+                )}
               </styles.ModalButtons>
             </styles.ModalContent>
           ) : (

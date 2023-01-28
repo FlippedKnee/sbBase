@@ -10,22 +10,34 @@ type TCustomButton = {
   borderColor?: string;
   disabled?: boolean;
   borderRadius?: number;
+  fullWidth?: boolean;
+  fontSize?: number;
+  height?: number;
+  justify?: string;
 };
 
 const CustomButton = ({
   onClick,
   disabled,
   background,
+  fullWidth,
   borderColor,
   textColor,
   label,
   borderRadius,
   icon,
+  height,
+  fontSize,
+  justify,
 }: TCustomButton) => {
   const [isPressed, setIsPressed] = useState(false);
   return (
     <styles.ButtonContainer
       disabled={disabled}
+      fontSize={fontSize}
+      height={height}
+      justify={justify}
+      fullWidth={fullWidth}
       onMouseDown={() => setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
       onClick={disabled ? () => {} : onClick}
