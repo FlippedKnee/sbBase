@@ -106,7 +106,7 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
     const res = await fetch("/api/twitter", {
       method: "get",
     });
-
+    console.log("res", res);
     if (res.status === 200) {
       const twitterStatus = await res.json();
       if (twitterStatus?.data?.id) {
