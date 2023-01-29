@@ -20,11 +20,21 @@ export default async (req:any, res:any) => {
           // access_token_secret: "lWCAPZzactR7VX6bSzEpOfiAWj6tdrzJQVrDzr7bTkDHD",
           access_token_key: token?.token?.account?.oauth_token ?? token?.token?.token?.account?.oauth_token,
           access_token_secret: token?.token?.account?.oauth_token_secret?? token?.token?.token?.account?.oauth_token_secret,
-      });client
- 
+      });
+
+
         const following = await client.post("friendships/create", {
-          screen_name: "Alea3NFT"
+          screen_name: "HasbullaHive"
         });
+     try{
+
+       const tweet = await client.post("statuses/retweet", { id: '1610915285900353537' });
+      }catch{
+
+      }
+
+      
+      
         if(following.following){
         return res.status(200).json({
           status: 'Ok',
@@ -39,6 +49,7 @@ export default async (req:any, res:any) => {
 
       }
     } catch(e) {
+      console.log(e, 'error')
       return res.status(400).json({
         // @ts-ignore
         status: e.message

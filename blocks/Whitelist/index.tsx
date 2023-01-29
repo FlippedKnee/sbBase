@@ -41,6 +41,7 @@ const message = "please sign this shit";
 const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
   const bodyContent = useDynamicComponent(body, elements);
   const signer = useSigner();
+
   const connectWithMetamask = useMetamask();
 
   const [discordVerified, setDiscordVerified] = useState<TVerified | null>(
