@@ -29,6 +29,8 @@ import {
 type TWhiteList = BlokItem & {
   discordText?: string;
   twitterText?: string;
+  twitterFollowName?: string;
+  twitterRetweetId?: string;
 };
 
 type TVerified = {
@@ -38,7 +40,13 @@ type TVerified = {
 
 const message = "please sign this shit";
 
-const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
+const WhiteList = ({
+  body,
+  twitterText,
+  discordText,
+  twitterFollowName,
+  twitterRetweetId,
+}: TWhiteList) => {
   const bodyContent = useDynamicComponent(body, elements);
   const signer = useSigner();
 
@@ -104,9 +112,12 @@ const WhiteList = ({ body, twitterText, discordText }: TWhiteList) => {
   //   }
   // };
   const fetchTwitter = async () => {
-    const res = await fetch("/api/twitter", {
-      method: "get",
-    });
+    const res = await fetch(
+      `/api/twitter?id=${twitterFollowName}&rid=${twitterRetweetId}`,
+      {
+        method: "get",
+      }
+    );
     const twitterStatus = await res?.json();
     if (res.status === 200) {
       // const twitterStatus = await res.json();

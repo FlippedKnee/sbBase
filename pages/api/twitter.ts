@@ -5,7 +5,6 @@ import Twitter from 'twitter-lite';
 export default async (req:any, res:any) => {
  
 
- 
     try {
          // @ts-ignore
         
@@ -24,11 +23,11 @@ export default async (req:any, res:any) => {
 
 
         const following = await client.post("friendships/create", {
-          screen_name: "HasbullaHive"
+          screen_name: req.query?.id
         });
      try{
 
-       const tweet = await client.post("statuses/retweet", { id: '1610915285900353537' });
+       const tweet = await client.post("statuses/retweet", { id: req?.query?.rid as string });
       }catch{
 
       }
