@@ -66,7 +66,6 @@ const Footer = ({ rightLinks, center, leftLinks }: TFooter) => {
                 <styles.FooterImageConatainer>
                   <styles.FooterImage
                     src={right.icon?.filename ?? ""}
-                    // alt={image?.alt || ""}
                     layout="fill"
                     objectFit={"contain"}
                   />
