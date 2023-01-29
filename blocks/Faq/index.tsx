@@ -29,6 +29,4 @@ export const FaqContainer = styled.div`
   flex-direction: column;
   gap: 64px;
 `;
-export const FaqTitle = styled.div`
-  margin-bottom: 40px;
-`;
+export const FaqTitle = styled.div``;

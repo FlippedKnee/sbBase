@@ -28,21 +28,9 @@ const Dropdown = ({ label, body, color }: TDropdown) => {
           xmlns="http://www.w3.org/2000/svg"
         >
           {!open && (
-            <line
-              x1="12.5"
-              y1="2.18557e-08"
-              x2="12.5"
-              y2="24"
-              stroke="#E0CC81"
-            />
+            <line x1="12.5" y1="2.18557e-08" x2="12.5" y2="24" stroke={color} />
           )}
-          <line
-            x1="24"
-            y1="12.5"
-            x2="-4.37114e-08"
-            y2="12.5"
-            stroke="#E0CC81"
-          />
+          <line x1="24" y1="12.5" x2="-4.37114e-08" y2="12.5" stroke={color} />
         </svg>
       </styles.DropDownHeader>
       <styles.DropDownChild open={open}>{bodyContent}</styles.DropDownChild>

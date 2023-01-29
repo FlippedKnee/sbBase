@@ -102,44 +102,51 @@ export default function Slider({
   });
   // @ts-ignore
   return (
-    <SliderContainer>
+    <>
       {sliderText && (
-        <SliderTextContainer style={{ color: "white" }}>
+        <SliderTextContainerMobile style={{ color: "white" }}>
           {sliderTextContent}
-        </SliderTextContainer>
+        </SliderTextContainerMobile>
       )}
-      <div
-        ref={ref}
-        className="keen-slider"
-        style={{ display: "flex", width: "100%" }}
-      >
-        {/* @ts-ignore */}
-        {itemContent?.length &&
-          /* @ts-ignore */
-          itemContent?.map((image, i) => (
-            <div
-              className={`keen-slider__slide number-slide${i + 1}`}
-              key={i}
-              style={{
-                height: `auto`,
-                borderRadius: borderRadius ?? 0,
-                overflow: "hidden",
-              }}
-            >
-              <div style={{ padding: "16px" }}>
-                {image}
-                {/* <SliderImage
+      <SliderContainer>
+        {sliderText && (
+          <SliderTextContainer style={{ color: "white" }}>
+            {sliderTextContent}
+          </SliderTextContainer>
+        )}
+        <div
+          ref={ref}
+          className="keen-slider"
+          style={{ display: "flex", width: "100%" }}
+        >
+          {/* @ts-ignore */}
+          {itemContent?.length &&
+            /* @ts-ignore */
+            itemContent?.map((image, i) => (
+              <div
+                className={`keen-slider__slide number-slide${i + 1}`}
+                key={i}
+                style={{
+                  height: `auto`,
+                  borderRadius: borderRadius ?? 0,
+                  overflow: "hidden",
+                }}
+              >
+                <div style={{ padding: "16px" }}>
+                  {image}
+                  {/* <SliderImage
               background={background}
               width={`${width}px`}
               height={`${height}px`}
               image={image}
               key={i}
             /> */}
+                </div>
               </div>
-            </div>
-          ))}
-      </div>
-    </SliderContainer>
+            ))}
+        </div>
+      </SliderContainer>
+    </>
   );
 }
 
@@ -156,4 +163,18 @@ export const SliderContainer = styled.div`
 export const SliderTextContainer = styled.div`
   align-self: center;
   padding: 0 16px;
+  display: none;
+  @media (min-width: 768px) {
+    display: block;
+  }
+`;
+
+export const SliderTextContainerMobile = styled.div`
+  padding: 0 16px;
+  > * {
+    max-width: 100%;
+  }
+  @media (min-width: 768px) {
+    display: none;
+  }
 `;
