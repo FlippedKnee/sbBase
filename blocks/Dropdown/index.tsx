@@ -20,7 +20,8 @@ const Dropdown = ({ label, body, color }: TDropdown) => {
     <styles.DropdownContainer color={color}>
       <styles.DropDownHeader onClick={() => setOpen(!open)} color={color}>
         <styles.DropDownLabel>{label}</styles.DropDownLabel>
-        <svg
+        <styles.DropDownClose color={color} open={open} />
+        {/* <svg
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -31,7 +32,7 @@ const Dropdown = ({ label, body, color }: TDropdown) => {
             <line x1="12.5" y1="2.18557e-08" x2="12.5" y2="24" stroke={color} />
           )}
           <line x1="24" y1="12.5" x2="-4.37114e-08" y2="12.5" stroke={color} />
-        </svg>
+        </svg> */}
       </styles.DropDownHeader>
       <styles.DropDownChild open={open}>{bodyContent}</styles.DropDownChild>
     </styles.DropdownContainer>
