@@ -12,7 +12,7 @@ import { elements } from "..";
 import styled, { useTheme } from "styled-components";
 import TiltCard from "../TiltCard";
 // @ts-ignore
-import ChevronRight from "../../asset/chevronRIght";
+import ChevronRight from "../../asset/ChevronRIght";
 import ChevronLeft from "../../asset/ChevronLeft";
 import * as style from "./Slider.styles";
 
