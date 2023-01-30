@@ -1,6 +1,7 @@
 import React, { useRef, useEffect , useState} from 'react'
 import * as styled from './game.styled.tsx'
 
+
 const PowerUp = {
   regular:{
     name:'Regular',
@@ -55,7 +56,7 @@ const PowerUp = {
 const powerArr = [ PowerUp.superFast, PowerUp.trippleBonus, PowerUp.doubleBonus, PowerUp.highDamage, PowerUp.tripple]
 
 class Player {
-  constructor(ctx, x , y, radius, color, canvas, currentPower){
+  constructor(ctx, x , y, radius, color, canvas, currentPower, image){
     this.x = x
     this.y = y
     this.radius = radius
@@ -65,15 +66,50 @@ class Player {
     this.canvas = canvas
     this.level = 1
     this.powerUp = currentPower ?? PowerUp.regular
+    this.image = image
+    this.h = 35
+    this.w = 80
+    this.rotation = 0;
+    this.angle = 1
   }
 
   draw (){
+    this.ctx.save();
+   
+    // this.ctx.beginPath()
+//     // // ctx.arc(50, 100, 20*Math.sin(frameCount*0.05)**2, 0, 2*Math.PI)
+//     // this.ctx.arc(this.x , this.y, 50, 20, Math.PI*2)
+//     this.ctx.fill()
+
+this.ctx.translate(this.x, this.y);
+this.ctx.rotate(this.angle );
+// console.log('this.angle * Math.PI/360', this.angle * Math.PI/360)
+this.ctx.fillStyle = 'red'
+this.ctx.fillRect(-40,-16, 80 ,35)
+// this.ctx.rotate(0 * Math.PI / 180);
+// this.ctx.restore()
+// this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+// this.ctx.save();
+// this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
+// this.ctx.translate(50,  50)
+// this.ctx.rotate(this.rotation);
+    // this.ctx.rect(this.x, this.y, 35,80)
   
-    this.ctx.fillStyle = this.color
-    this.ctx.beginPath()
-    // ctx.arc(50, 100, 20*Math.sin(frameCount*0.05)**2, 0, 2*Math.PI)
-    this.ctx.arc(this.x , this.y, this.radius, 0, Math.PI*2)
-    this.ctx.fill()
+this.ctx.drawImage(this.image, 0-this.w/2, 0-this.h/2);
+this.ctx.restore();
+
+  }
+
+  rotate(e) {
+   
+      const rect = this.canvas.getBoundingClientRect();
+      console.log('rect.left', rect.left)
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const r  = Math.atan2(y -  this.y ,x - this.x);
+      this.rotation = r 
+      this.angle = r 
+      this.draw();
   }
   update(){
 
@@ -97,7 +133,7 @@ class Player {
 }
 class Enemy {
   constructor(ctx, x, y, radius, color, velocity, multiplier) {
-    this.x = x 
+    this.x = x
     this.y = y
     this.radius = radius
     this.color = color
@@ -212,7 +248,87 @@ class Power  {
   }
 }
 
+function RectCircleColliding(circle,rect){
+      
+  var distX = Math.abs(circle.x - rect.x-rect.w/2);
+  var distY = Math.abs(circle.y - rect.y-rect.h/2);
 
+  if (distX > (rect.w/2 + circle.radius)) { return false; }
+  if (distY > (rect.h/2 + circle.radius)) { return false; }
+
+  if (distX <= (rect.w/2)) { return true; } 
+  if (distY <= (rect.h/2)) { return true; }
+
+  var dx=distX-rect.w/2;
+  var dy=distY-rect.h/2;
+  return (dx*dx+dy*dy<=(circle.radius*circle.radius));
+}
+
+
+function detectCollision(rectX, rectY, rectWidth, rectHeight, rectAngle, circleX, circleY, circleRadius) {
+  // calculate the four axes of the rectangle
+
+  const rectAxis1 = {x: Math.cos(-rectAngle), y: Math.sin(-rectAngle)};
+  const rectAxis2 = {x: Math.cos(-rectAngle + Math.PI / 2), y: Math.sin(-rectAngle + Math.PI / 2)};
+
+  // project the rectangle and circle onto each axis
+  const rectProjection1 = project(rectX, rectY, rectWidth, rectHeight, rectAxis1);
+  const rectProjection2 = project(rectX, rectY, rectWidth, rectHeight, rectAxis2);
+  const circleProjection1 = projectCircle(circleX, circleY, circleRadius, rectAxis1);
+  const circleProjection2 = projectCircle(circleX, circleY, circleRadius, rectAxis2);
+  // console.log('rectX', rectX)
+  // console.log('rectProjection1', rectProjection1)
+  // console.log('circleProjection1', circleProjection1)
+  // console.log('rectProjection2', rectProjection2)
+  // console.log('circleProjection2', circleProjection2)
+  // check for overlap on each axis
+  const overlap1 = getOverlap(rectProjection1, circleProjection1);
+  const overlap2 = getOverlap(rectProjection2, circleProjection2);
+
+  // if there is no overlap on any axis, the rectangle and circle do not collide
+  if (overlap1 === 0 || overlap2 === 0) {
+    console.log('overlap_______________')
+      return false;
+  }
+  // if there is overlap on all axes, the rectangle and circle do collide
+  return true;
+}
+
+function project(rectX, rectY, rectWidth, rectHeight, axis) {
+  const rectHalfWidth = rectWidth / 2;
+  const rectHalfHeight = rectHeight / 2;
+
+  const rectTopLeft = {x: rectX - rectHalfWidth * axis.x + rectHalfHeight * axis.y, y: rectY - rectHalfWidth * axis.y - rectHalfHeight * axis.x};
+  const rectBottomRight = {x: rectX + rectHalfWidth * axis.x + rectHalfHeight * axis.y, y: rectY + rectHalfWidth * axis.y - rectHalfHeight * axis.x};
+
+  return {min: dotProduct(rectTopLeft, axis), max: dotProduct(rectBottomRight, axis)};
+}
+
+function projectCircle(circleX, circleY, circleRadius, axis) {
+  const dot = dotProduct({x: circleX, y: circleY}, axis);
+  return {min: dot - circleRadius, max: dot + circleRadius};
+}
+
+function dotProduct(point, axis) {
+  return point.x * axis.x + point.y * axis.y;
+}
+
+function getOverlap(projection1, projection2) {
+  return Math.min(projection1.max, projection2.max) - Math.max(projection1.min, projection2.min);
+}
+
+const getAxis = (rect) => {
+  const OX = new Vector({x:1, y:0});
+  const OY = new Vector({x:0, y:1});
+  // Do not forget to transform degree to radian
+  const RX = OX.Rotate(rect.angle * Math.PI / 180);
+  const RY = OY.Rotate(rect.angle * Math.PI / 180);
+
+  return [
+     new Line({...rect.center, dx: RX.x, dy: RX.y}),
+     new Line({...rect.center, dx: RY.x, dy: RY.y}),
+  ];
+}
 const Canvas = props => {
   
   const canvasRef = useRef(null)
@@ -231,8 +347,18 @@ const Canvas = props => {
     const y = canvas.height /2
     let level = 1
     let currentPower = PowerUp.regular
+    const image = new Image();
+    image.onload = function(res) {
+      console.log("res", res);
+      // context.drawImage(image, 0, 0);
+    };
+    image.onerror = function(err) {
+      console.log("err", err);
+    };
+    image.src = "/_next/image?url=https%3A%2F%2Fa.storyblok.com%2Ff%2F191632%2F84x37%2Fa3ad2ceb1c%2Fbombr.png%2Fm%2F84x0%2Ffilters%3Aquality(75)&w=256&q=75";
+    
     //Our draw came here
-    const player = new Player(context, x, y, 10, '#fff', canvas, currentPower)
+    const player = new Player(context, x, y, 10, '#fff', canvas, currentPower, image)
 
     const projectiles = []
     const enemies = []
@@ -241,12 +367,12 @@ const Canvas = props => {
     let powerShots = 0
     let time = 0
     const spawnEnemies = () => {
-      setInterval(() => {
+      // setInterval(() => {
         context.clearRect(0, 0, canvas.width, canvas.height)
         const makeEnemy = () => {
 
           let level = player.level > 1 ? Math.random() * 40:0
-   
+        
           if(player.level > 10 ){
             level = Math.random() * 60
           }
@@ -300,7 +426,7 @@ const Canvas = props => {
         }
      
   
-      },1000)
+      // },1000)
     }
     spawnEnemies()
   
@@ -402,8 +528,10 @@ const Canvas = props => {
         }
         const distanceBetweenPlayer = Math.hypot(player.x - powerUp.x, player.y - powerUp.y)
         // ON HIT
-        if(distanceBetweenPlayer - powerUp.radius - player.radius < 1){
-     
+        const colliding = RectCircleColliding(powerUp, player)
+      
+        if(colliding){
+          console.log('power collided')
    
          player.power=powerUp.power
          currentPower = powerUp.power
@@ -416,7 +544,16 @@ const Canvas = props => {
       
       enemies.forEach((enemy, iE) => {
       enemy.update()
-     
+      let tankInvMatrix = context.getTransform().invertSelf()
+        //  console.log('tankInvMatrix', tankInvMatrix)
+        let  bullet = new DOMPoint(enemy.x,enemy.y);
+       let relBullet = tankInvMatrix.transformPoint(bullet)
+       console.log(relBullet)
+       console.log('enemy.x', enemy.x)
+        if(relBullet.x > player.x && relBullet.x < 80 && relBullet.x > -40 && relBullet.x < 30){
+  console.log('bullet hit tank', bullet)
+  /// bullet has hit the tank
+}
       if(enemy.x + enemy.radius < 0 || 
         enemy.x - enemy.radius > canvas.width ||
         enemy.y + enemy.radius > canvas.height ||
@@ -436,12 +573,16 @@ const Canvas = props => {
       }
       const distanceBetweenPlayer = Math.hypot(player.x - enemy.x, player.y - enemy.y)
       // ON HIT
-      if(distanceBetweenPlayer - enemy.radius - player.radius < 1){
+     
+    // const colliding = RectCircleColliding(enemy, player)
+    const colliding = detectCollision(player.x, player.y, player.w, player.h, player.angle, enemy.x, enemy.y, enemy.radius)
+    
+      if(!colliding){
+        console.log(colliding)
    
-   
-       window.cancelAnimationFrame(animationFrameId)
-       player.level=1
-       setPlay(false)
+      //  window.cancelAnimationFrame(animationFrameId)
+      //  player.level=1
+      //  setPlay(false)
 
       }
      
@@ -489,7 +630,7 @@ const Canvas = props => {
     }
     render()
     // SHOOT
-    window.addEventListener('click',(e) => {
+    const shoot = (e) =>{
       const angle = Math.atan2(e.clientY - player.y, e.clientX - player.x)
       powerShots++
       if(powerShots >= 40){
@@ -513,37 +654,69 @@ const Canvas = props => {
         y: Math.sin(angle - 0.2) * 4
       }
       projectiles.push(new Projectile(
-        context, player.x ,player.y , 5 ,'fff', vel
+        context, player.x ,player.y , 5 ,'white', vel
       ))
       if(currentPower.loop === 2){
         projectiles.push(new Projectile(
-          context, player.x ,player.y , 5 ,'fff', velFast
+          context, player.x ,player.y , 5 ,'white', velFast
         ))
       }
       if(currentPower.loop === 3){
         projectiles.push(new Projectile(
-          context, player.x ,player.y , 5 ,'fff', vel2
+          context, player.x ,player.y , 5 ,'white', vel2
           ))
         projectiles.push(new Projectile(
-          context, player.x ,player.y , 5 ,'fff', vel3
+          context, player.x ,player.y , 5 ,'white', vel3
           ))
-      }
+      }}
+    var mousedownID = -1
+    var shooting = false
+    window.addEventListener('mousedown',(e) => {
+      if(mousedownID==-1)  //Prevent multimple loops!
+      shooting = true
+      mousedownID = setInterval( () => shoot(e), 300 /*execute every 100ms*/);
+      
+    })
+
+    let rotation = 0;
+    window.addEventListener('mousemove',(e) => {
+      clearInterval(mousedownID);
+      mousedownID=-1;
+      
+      if(shooting){
+        setTimeout(() => shoot(e), 300)
+        // shoot(e)
+        mousedownID = setInterval( () => shoot(e), 300 /*execute every 100ms*/);
+      }  //Prevent multimple loops!
+
+   
+      player.rotate(e)
+    })
+    if(!play){
+      console.log('end game done')
+    }
+    window.addEventListener('mouseup',(e) => {
+      console.log('mouseup')
+      clearInterval(mousedownID);
+      shooting = false
+      mousedownID=-1;
     })
     // MOVE
     window.addEventListener('keydown', (e) => {
+  
       const {key} = e
 
       const press = key?.toLocaleLowerCase()
       if(press === 'w'){
 
-        if(player.y >= 100){
+        if(player.y >= 10){
         player.velocity.y -= 10 
         }else{
           player.velocity.y = 0 
         }
       }
       if(press === 's'){
-        if(player.y <= canvas.height - 100){
+        if(player.y <= canvas.height - 10){
           player.velocity.y += 10 
         }else{
           player.velocity.y = 0 
@@ -551,7 +724,7 @@ const Canvas = props => {
 
       }
       if(press === 'a'){
-        if(player.x >= 100){
+        if(player.x >= 10){
           player.velocity.x -= 10 
         }else{
           player.velocity.x = 0 
@@ -559,7 +732,7 @@ const Canvas = props => {
 
       }
       if(press === 'd'){
-        if(player.x <= canvas.width - 100){
+        if(player.x <= canvas.width - 10){
 
           player.velocity.x += 10 
         }else{

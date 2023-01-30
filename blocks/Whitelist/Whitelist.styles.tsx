@@ -85,16 +85,16 @@ export const VerifiedText = styled.span`
   font-weight: 300;
 `;
 
-export const VerifyBox = styled.div`
+export const VerifyBox = styled.div<{ background?: string }>`
   padding: 36px;
   border-radius: 28px;
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(10px);
+  background: ${(props) => props.background ?? "#fff"};
   max-width: 350px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 450px;
+  border: 1px solid black;
 `;
 
 export const Input = styled.textarea`
@@ -119,7 +119,7 @@ export const Modal = styled.div`
 `;
 
 export const ModalContent = styled.div`
-  background: #16171a;
+  background: #8b6e63;
   padding: 36px;
   border-radius: 24px;
   max-width: 375px;

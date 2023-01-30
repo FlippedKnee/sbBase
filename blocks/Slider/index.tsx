@@ -11,6 +11,10 @@ import {
 import { elements } from "..";
 import styled, { useTheme } from "styled-components";
 import TiltCard from "../TiltCard";
+// @ts-ignore
+import ChevronRight from "../../asset/chevronRIght";
+import ChevronLeft from "../../asset/ChevronLeft";
+import * as style from "./Slider.styles";
 
 type TSlider = {
   background?: string;
@@ -29,6 +33,8 @@ type TSlider = {
   sliderText?: Blok;
   origin?: number | "center" | "auto";
   mobileOrigin?: number | "center" | "auto";
+  showControllers?: boolean;
+  clickForNext?: boolean;
 };
 const animation = { duration: 10000, easing: (t: number) => t };
 
@@ -48,12 +54,15 @@ export default function Slider({
   spacing,
   sliderText,
   origin,
+  showControllers,
   mobileOrigin,
+  clickForNext,
 }: TSlider) {
   const itemContent = useDynamicComponent(items, elements);
   const sliderTextContent = useDynamicComponent(sliderText, elements);
   const theme = useTheme();
-  const [ref] = useKeenSlider<HTMLDivElement>({
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [ref, instanceRef] = useKeenSlider<HTMLDivElement>({
     loop: loop,
     renderMode: "performance",
     drag: !autoPlay,
@@ -74,7 +83,9 @@ export default function Slider({
       spacing: spacing,
       origin: mobileOrigin,
     },
-
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
+    },
     created(s) {
       if (autoPlay) {
         s.moveToIdx(reverse ? -5 : 5, true, animation);
@@ -103,17 +114,11 @@ export default function Slider({
   // @ts-ignore
   return (
     <>
-      {sliderText && (
-        <SliderTextContainerMobile style={{ color: "white" }}>
-          {sliderTextContent}
-        </SliderTextContainerMobile>
-      )}
+      <SliderTextContainerMobile style={{ color: "white" }}>
+        {sliderTextContent}
+      </SliderTextContainerMobile>
+
       <SliderContainer>
-        {sliderText && (
-          <SliderTextContainer style={{ color: "white" }}>
-            {sliderTextContent}
-          </SliderTextContainer>
-        )}
         <div
           ref={ref}
           className="keen-slider"
@@ -132,7 +137,12 @@ export default function Slider({
                   overflow: "hidden",
                 }}
               >
-                <div style={{ padding: "16px" }}>
+                <div
+                  style={{ padding: "16px" }}
+                  onClick={() => {
+                    clickForNext && instanceRef?.current?.next();
+                  }}
+                >
                   {image}
                   {/* <SliderImage
               background={background}
@@ -145,6 +155,29 @@ export default function Slider({
               </div>
             ))}
         </div>
+        {showControllers && (
+          <>
+            {currentSlide > 0 && (
+              <style.LeftController
+                onClick={() => {
+                  instanceRef?.current?.prev();
+                }}
+              >
+                <ChevronLeft color={"#ffffff"} width={"30"} height={"100"} />
+              </style.LeftController>
+            )}
+            {/* @ts-ignore */}
+            {currentSlide < itemContent?.length - 1 && (
+              <style.RightController
+                onClick={() => {
+                  instanceRef?.current?.next();
+                }}
+              >
+                <ChevronRight color={"#ffffff"} width={"30"} height={"100"} />
+              </style.RightController>
+            )}
+          </>
+        )}
       </SliderContainer>
     </>
   );
@@ -173,8 +206,5 @@ export const SliderTextContainerMobile = styled.div`
   padding: 0 16px;
   > * {
     max-width: 100%;
-  }
-  @media (min-width: 768px) {
-    display: none;
   }
 `;

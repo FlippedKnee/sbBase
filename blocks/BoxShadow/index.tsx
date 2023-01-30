@@ -12,12 +12,24 @@ type TExampleImage = BlokItem & {
   image?: Asset;
   background?: string;
   text?: Blok;
+  radius?: string;
+  borderColor?: string;
 };
 
-const ExampleImage = ({ image, background, text }: TExampleImage) => {
+const ExampleImage = ({
+  borderColor,
+  image,
+  background,
+  text,
+  radius,
+}: TExampleImage) => {
   const textContent = useDynamicComponent(text, elements);
   return (
-    <styles.ExampleImageContainer background={background}>
+    <styles.ExampleImageContainer
+      background={background}
+      radius={radius}
+      borderColor={borderColor}
+    >
       {image && (
         <styles.ImageContainer>
           <ImageComponent image={image} width={110} height={48} contain />

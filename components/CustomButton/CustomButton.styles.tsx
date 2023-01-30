@@ -25,7 +25,7 @@ export const ButtonContainer = styled.div<TButton>`
   background: ${({ background }) => background};
   padding: 10px 24px;
   color: ${({ color }) => color};
-  ${({ disabled }) => disabled && `opacity: 0.5;`}
+  ${({ disabled }) => disabled && `opacity: 0.6;`}
   ${({ borderColor }) =>
     borderColor &&
     borderColor?.length > 0 &&

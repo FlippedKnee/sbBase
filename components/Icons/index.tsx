@@ -43,7 +43,7 @@ const TwitterSvg = () => {
   );
 };
 
-const CheckMark = ({ color }: { color: string }) => (
+const CheckMark = ({ color }: { color?: string }) => (
   <svg
     width="24"
     height="24"

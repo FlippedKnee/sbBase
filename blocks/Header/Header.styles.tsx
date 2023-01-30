@@ -128,6 +128,7 @@ export const LogoImageContainer = styled.div<TLogoImageContainer>`
   position: relative;
   width: ${(props) => props?.width ?? 60}px;
   height: ${(props) => props?.height ?? 60}px;
+  margin-top: 20px;
 `;
 
 export const HeaderQuickLinks = styled.div<THeaderContainer>`

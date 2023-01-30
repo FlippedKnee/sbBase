@@ -10,15 +10,17 @@ type TFooterLinks = {
   label?: string;
   icon?: Asset;
   isExternal?: boolean;
+  textColor?: string;
 };
 
 type TFooter = {
   rightLinks?: TFooterLinks[];
   center?: Blok;
+  textColor?: string;
   leftLinks?: TFooterLinks[];
 };
 
-const Footer = ({ rightLinks, center, leftLinks }: TFooter) => {
+const Footer = ({ rightLinks, center, leftLinks, textColor }: TFooter) => {
   const centerContent = useDynamicComponent(center, elements);
   return (
     <styles.Footer>
@@ -33,6 +35,7 @@ const Footer = ({ rightLinks, center, leftLinks }: TFooter) => {
               <styles.FooterLink
                 href={left.link?.cached_url}
                 target={left?.isExternal ? "_blank" : "_self"}
+                color={textColor}
               >
                 <p>{left.label}</p>
                 {left.icon?.filename && (
@@ -58,6 +61,7 @@ const Footer = ({ rightLinks, center, leftLinks }: TFooter) => {
             target={right?.isExternal ? "_blank" : "_self"}
           >
             <styles.FooterLink
+              color={textColor}
               href={right.link?.cached_url}
               target={right?.isExternal ? "_blank" : "_self"}
             >

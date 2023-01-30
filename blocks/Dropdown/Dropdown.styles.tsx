@@ -8,7 +8,7 @@ export const DropdownContainer = styled.div<TDropDownHeader>`
   /* display: flex;
   
   justify-content: space-between; */
-  border-bottom: 1px solid ${({ color }) => color};
+  /* border-bottom: 1px solid ${({ color }) => color}; */
 `;
 
 export const DropDownHeader = styled.div<TDropDownHeader>`
@@ -24,7 +24,8 @@ export const DropDownHeader = styled.div<TDropDownHeader>`
 export const DropDownLabel = styled.p`
   color: ${({ color }) => color};
   font-size: 24px;
-  font-family: "Inter", sans-serif;
+
+  line-height: 32px;
 `;
 
 type TDropDownChild = {

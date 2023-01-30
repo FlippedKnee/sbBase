@@ -31,6 +31,10 @@ type TWhiteList = BlokItem & {
   twitterText?: string;
   twitterFollowName?: string;
   twitterRetweetId?: string;
+  background?: string;
+  buttonBackground?: string;
+  buttonSuccessBackground?: string;
+  signMessage?: string;
 };
 
 type TVerified = {
@@ -38,14 +42,16 @@ type TVerified = {
   name?: string;
 };
 
-const message = "please sign this shit";
-
 const WhiteList = ({
   body,
   twitterText,
   discordText,
   twitterFollowName,
   twitterRetweetId,
+  background,
+  buttonBackground,
+  buttonSuccessBackground,
+  signMessage,
 }: TWhiteList) => {
   const bodyContent = useDynamicComponent(body, elements);
   const signer = useSigner();
@@ -202,7 +208,7 @@ const WhiteList = ({
       <styles.WLContainer>
         {bodyContent}
 
-        <styles.VerifyBox>
+        <styles.VerifyBox background={background}>
           <div>
             <p
               style={{
@@ -220,18 +226,18 @@ const WhiteList = ({
                 fontSize={13}
                 justify={"space-between"}
                 height={47}
-                background={"#2a2525"}
+                background={
+                  twitterVerified?.id && accountsHasBeenUsed?.id !== "TWITTER"
+                    ? buttonSuccessBackground
+                    : buttonBackground
+                }
                 borderColor={
                   twitterVerified?.id && accountsHasBeenUsed?.id !== "TWITTER"
-                    ? "#25f5b0"
-                    : "#2a2a2a"
+                    ? buttonSuccessBackground
+                    : buttonBackground
                 }
                 label={"1. Connect Twitter"}
-                textColor={
-                  twitterVerified?.id && accountsHasBeenUsed?.id !== "TWITTER"
-                    ? "#25f5b0"
-                    : "#f4f4f4"
-                }
+                textColor={"#f4f4f4"}
                 onClick={() => {
                   setHasClickedTwitter(true);
                   signIn("twitter");
@@ -240,7 +246,7 @@ const WhiteList = ({
                 icon={
                   twitterVerified?.id &&
                   accountsHasBeenUsed?.id !== "TWITTER" ? (
-                    <CheckMark color="#25f5b0" />
+                    <CheckMark color={"#f4f4f4"} />
                   ) : (
                     <TwitterSvg />
                   )
@@ -254,19 +260,19 @@ const WhiteList = ({
                 fontSize={13}
                 height={47}
                 justify={"space-between"}
-                background={"#2a2525"}
+                background={
+                  walletConnected && accountsHasBeenUsed?.id !== "ADX"
+                    ? buttonSuccessBackground
+                    : buttonBackground
+                }
                 disabled={!twitterVerified}
                 borderColor={
                   walletConnected && accountsHasBeenUsed?.id !== "ADX"
-                    ? "#25f5b0"
-                    : "#575555"
+                    ? buttonSuccessBackground
+                    : buttonBackground
                 }
                 label={"2. Connect wallet"}
-                textColor={
-                  walletConnected && accountsHasBeenUsed?.id !== "ADX"
-                    ? "#25f5b0"
-                    : "#f4f4f4"
-                }
+                textColor={"#f4f4f4"}
                 onClick={async () => {
                   const metamask = await connectWithMetamask();
                   if (
@@ -279,7 +285,7 @@ const WhiteList = ({
                 borderRadius={100}
                 icon={
                   walletConnected && accountsHasBeenUsed?.id !== "ADX" ? (
-                    <CheckMark color="#25f5b0" />
+                    <CheckMark color={"#f4f4f4"} />
                   ) : null
                 }
               />
@@ -292,22 +298,22 @@ const WhiteList = ({
                 height={47}
                 disabled={!walletConnected}
                 justify={"space-between"}
-                background={"#2a2525"}
+                background={
+                  adx && accountsHasBeenUsed?.id !== "ADX"
+                    ? buttonSuccessBackground
+                    : buttonBackground
+                }
                 borderColor={
                   adx && accountsHasBeenUsed?.id !== "ADX"
-                    ? "#25f5b0"
-                    : "#2a2525"
+                    ? buttonSuccessBackground
+                    : buttonBackground
                 }
                 label={"3. Sign wallet"}
-                textColor={
-                  adx && accountsHasBeenUsed?.id !== "ADX"
-                    ? "#25f5b0"
-                    : "#f4f4f4"
-                }
+                textColor={"#f4f4f4"}
                 onClick={async () => {
-                  if (signer) {
+                  if (signer && signMessage) {
                     try {
-                      const signAdx = await signer.signMessage(message);
+                      const signAdx = await signer.signMessage(signMessage);
                       if (signAdx) {
                         const retrievedAdx = await signer.getAddress();
                         setAdx(retrievedAdx);
@@ -320,7 +326,7 @@ const WhiteList = ({
                 borderRadius={100}
                 icon={
                   adx && accountsHasBeenUsed?.id !== "ADX" ? (
-                    <CheckMark color="#25f5b0" />
+                    <CheckMark color={"#f4f4f4"} />
                   ) : null
                 }
               />
@@ -337,7 +343,7 @@ const WhiteList = ({
           <styles.ButtonContainer>
             <CustomButton
               fullWidth
-              background={"#2a2525"}
+              background={buttonBackground}
               label={"Sign up for whitelist"}
               textColor={"#f4f4f4"}
               onClick={async () => {

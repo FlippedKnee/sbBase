@@ -12,7 +12,8 @@ import { useEffect } from "react";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
-const activeChainId = ChainId.Goerli;
+
+const activeChainId = ChainId.Mumbai;
 
 type TApp = {
   isPreviewActive?: boolean;
@@ -45,6 +46,24 @@ function App({ Component, pageProps }: AppProps<TApp & Session>) {
         <link
           href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Urbanist:wght@100;300;400;500;600&display=swap"
           rel="stylesheet"
+        />
+        <link rel="shortcut icon" href="/images/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/images/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/images/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/images/favicon-16x16.png"
         />
         <script
           src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"

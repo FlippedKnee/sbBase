@@ -63,6 +63,7 @@ export const elements: ElementType<TBlockElement> = {
   slider: Slider,
   tiltCard: TiltCard,
   linkBlock: LinkBlock,
+  scrollContainer: ScrollContainer,
 };
 
 export type TBlockElement = any;

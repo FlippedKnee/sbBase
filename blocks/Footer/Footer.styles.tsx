@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const Footer = styled.footer`
   padding: 20px 0;
-  border-top: 1px solid #fff;
+  /* border-top: 1px solid #fff; */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -58,11 +58,11 @@ export type TMenuLine = {
   color?: string;
 };
 
-export const FooterLink = styled.a`
+export const FooterLink = styled.a<{ color?: string }>`
   position: relative;
   display: flex;
   gap: 4px;
-  color: #c6cdcd;
+  color: ${(props) => props.color ?? "#c6cdcd"};
   > * {
     font-size: 13px;
   }
