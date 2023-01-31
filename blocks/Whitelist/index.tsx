@@ -44,7 +44,7 @@ type TVerified = {
 };
 
 const message =
-  "Welcome to Pot Plantz! \n\nThis request will not trigger a blockchain transaction or cost any gas fees.  \n\nThis is only a read-me sign up to verify your public address before the minting! \n\nEnjoy Pot Plantz. ";
+  "Welcome to Pot Plantz! \n\nSigning this message allows us to verify that you are the owner of the wallet you are connecting.  \n\nThis is a safe, gas-less interaction that does not trigger a blockchain transaction.  \n\nEnjoy Pot Plantz. ";
 
 const WhiteList = ({
   body,
