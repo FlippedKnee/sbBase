@@ -8,6 +8,7 @@ export type THeroContainer = {
   marginTop?: string;
   backgroundSize?: string;
   backgroundCenter?: boolean;
+  contentZIndex?: number;
 };
 const slightFlip = keyframes`
   0%{
@@ -88,7 +89,7 @@ export const HeroLogo = styled.div`
   padding-top: 24px;
 `;
 
-export const HeroText = styled.div`
+export const HeroText = styled.div<{ contentZIndex?: number }>`
   grid-column: 1;
   justify-self: center;
   align-self: center;
@@ -96,6 +97,8 @@ export const HeroText = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 32px;
+  ${({ contentZIndex }) =>
+    contentZIndex && `position: relative; z-index: ${contentZIndex}`};
 `;
 
 export const HeroBackground = styled.div`

@@ -13,7 +13,7 @@ import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
 
-const activeChainId = ChainId.Mumbai;
+const activeChainId = ChainId.Mainnet;
 
 type TApp = {
   isPreviewActive?: boolean;

@@ -24,6 +24,7 @@ import {
   useMetamask,
   useContract,
   useSigner,
+  ChainId,
 } from "@thirdweb-dev/react";
 
 type TWhiteList = BlokItem & {
@@ -41,6 +42,9 @@ type TVerified = {
   id?: string;
   name?: string;
 };
+
+const message =
+  "Welcome to Pot Plantz! \n\nThis request will not trigger a blockchain transaction or cost any gas fees.  \n\nThis is only a read-me sign up to verify your public address before the minting! \n\nEnjoy Pot Plantz. ";
 
 const WhiteList = ({
   body,
@@ -275,6 +279,7 @@ const WhiteList = ({
                 textColor={"#f4f4f4"}
                 onClick={async () => {
                   const metamask = await connectWithMetamask();
+
                   if (
                     !metamask.error ||
                     metamask?.error?.name === "ConnectorAlreadyConnectedError"
@@ -313,9 +318,12 @@ const WhiteList = ({
                 onClick={async () => {
                   if (signer && signMessage) {
                     try {
-                      const signAdx = await signer.signMessage(signMessage);
+                      // const signAdx = await signer.signMessage(signMessage);
+                      const retrievedAdx = await signer.getAddress();
+                      const signAdx = await signer.signMessage(
+                        message + `\n\nWallet address: \n${retrievedAdx}`
+                      );
                       if (signAdx) {
-                        const retrievedAdx = await signer.getAddress();
                         setAdx(retrievedAdx);
                       }
                     } catch (e) {

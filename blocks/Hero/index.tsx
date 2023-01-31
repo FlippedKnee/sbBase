@@ -22,6 +22,7 @@ export type THero = BlokItem & {
   marginTop?: string;
   backgroundSize?: string;
   backgroundCenter?: boolean;
+  contentZIndex?: number;
 };
 
 const Hero = ({
@@ -34,6 +35,7 @@ const Hero = ({
   marginTop,
   backgroundSize,
   backgroundCenter,
+  contentZIndex,
 }: THero) => {
   const textContent = useDynamicComponent(text, elements);
   const [initial, setIniital] = useState(false);
@@ -52,7 +54,9 @@ const Hero = ({
         alignItems={alignItems}
         justifyContent={justifyContent}
       >
-        <styles.HeroText>{textContent}</styles.HeroText>
+        <styles.HeroText contentZIndex={contentZIndex}>
+          {textContent}
+        </styles.HeroText>
         <styles.HeroImage>
           <ImageComponent image={image} height={350} width={225} />
         </styles.HeroImage>
