@@ -19,7 +19,9 @@ type RichTextStyledProps = {
 
 export const RichTextContainer = styled.div<RichTextStyledProps>`
   width: 100%;
-  ${({ fontFamily }) => fontFamily && `font-family: ${fontFamily}`};
+  ${({ fontFamily }) =>
+    fontFamily &&
+    `font-family: ${fontFamily ?? `'M PLUS Rounded 1c', sans-serif`}`};
   color: ${(props) => props.textColor ?? "#000"};
   text-align: ${(props) => props.textAlignMobile ?? "initial"};
   margin-top: ${(props) => (props.marginTop ? props.marginTop : 0)}px;
@@ -32,6 +34,9 @@ export const RichTextContainer = styled.div<RichTextStyledProps>`
     `
     max-width: ${props.maxWidth}px;`}
   > * {
+    ${({ fontFamily }) =>
+      fontFamily &&
+      `font-family: ${fontFamily ?? `'M PLUS Rounded 1c', sans-serif`}`};
     font-weight: ${(props) => props.fontWeight ?? "normal"};
     font-size: ${(props) =>
       props.fontSize?.split(",")?.[1] ?? props.fontSize?.split(",")?.[0]}px;

@@ -17,6 +17,7 @@ export type RichTextProps = {
   noWrap?: boolean;
   lineHeight?: string;
   textAlignMobile?: string;
+  fontFamily?: string;
 };
 
 const RichText = ({
@@ -34,10 +35,12 @@ const RichText = ({
   linebreakHeight,
   lineHeight,
   textAlignMobile,
+  fontFamily,
   ...props
 }: RichTextProps) => {
   return (
     <styles.RichTextContainer
+      fontFamily={fontFamily}
       maxWidth={maxWidth}
       textAlign={textAlign}
       textColor={textColor}

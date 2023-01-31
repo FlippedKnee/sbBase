@@ -43,10 +43,7 @@ function App({ Component, pageProps }: AppProps<TApp & Session>) {
           href="https://fonts.gstatic.com"
           crossOrigin="true"
         />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Urbanist:wght@100;300;400;500;600&display=swap"
-          rel="stylesheet"
-        />
+
         <link rel="shortcut icon" href="/images/favicon.ico" />
         <link
           rel="apple-touch-icon"
