@@ -84,8 +84,8 @@ class Player {
 this.ctx.translate(this.x, this.y);
 this.ctx.rotate(this.angle );
 // console.log('this.angle * Math.PI/360', this.angle * Math.PI/360)
-this.ctx.fillStyle = 'red'
-this.ctx.fillRect(-40,-16, 80 ,35)
+// this.ctx.fillStyle = 'red'
+// this.ctx.fillRect(-40,-16, 80 ,35)
 // this.ctx.rotate(0 * Math.PI / 180);
 // this.ctx.restore()
 // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -103,7 +103,6 @@ this.ctx.restore();
   rotate(e) {
    
       const rect = this.canvas.getBoundingClientRect();
-      console.log('rect.left', rect.left)
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const r  = Math.atan2(y -  this.y ,x - this.x);
@@ -249,7 +248,7 @@ class Power  {
 }
 
 function RectCircleColliding(circle,rect){
-      
+
   var distX = Math.abs(circle.x - rect.x-rect.w/2);
   var distY = Math.abs(circle.y - rect.y-rect.h/2);
 
@@ -264,71 +263,47 @@ function RectCircleColliding(circle,rect){
   return (dx*dx+dy*dy<=(circle.radius*circle.radius));
 }
 
-
+function distance(x1, y1, x2, y2) {
+  return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+}
 function detectCollision(rectX, rectY, rectWidth, rectHeight, rectAngle, circleX, circleY, circleRadius) {
   // calculate the four axes of the rectangle
+  // var angleOfRad = degToRad(-deg)
+  let cx
+  let cy
+  var rectCenterX = rectX + rectWidth / 2
+  var rectCenterY = rectY + rectWidth / 2
 
-  const rectAxis1 = {x: Math.cos(-rectAngle), y: Math.sin(-rectAngle)};
-  const rectAxis2 = {x: Math.cos(-rectAngle + Math.PI / 2), y: Math.sin(-rectAngle + Math.PI / 2)};
+  var rotateCircleX = Math.cos(rectAngle) * (circleX - rectCenterX) - Math.sin(rectAngle) * (circleY - rectCenterY) + rectCenterX
+  var rotateCircleY = Math.sin(rectAngle) * (circleX - rectCenterX) + Math.cos(rectAngle) * (circleY - rectCenterY) + rectCenterY
 
-  // project the rectangle and circle onto each axis
-  const rectProjection1 = project(rectX, rectY, rectWidth, rectHeight, rectAxis1);
-  const rectProjection2 = project(rectX, rectY, rectWidth, rectHeight, rectAxis2);
-  const circleProjection1 = projectCircle(circleX, circleY, circleRadius, rectAxis1);
-  const circleProjection2 = projectCircle(circleX, circleY, circleRadius, rectAxis2);
-  // console.log('rectX', rectX)
-  // console.log('rectProjection1', rectProjection1)
-  // console.log('circleProjection1', circleProjection1)
-  // console.log('rectProjection2', rectProjection2)
-  // console.log('circleProjection2', circleProjection2)
-  // check for overlap on each axis
-  const overlap1 = getOverlap(rectProjection1, circleProjection1);
-  const overlap2 = getOverlap(rectProjection2, circleProjection2);
-
-  // if there is no overlap on any axis, the rectangle and circle do not collide
-  if (overlap1 === 0 || overlap2 === 0) {
-    console.log('overlap_______________')
-      return false;
+	if (rotateCircleX < rectX) {
+    cx = rectX
+  } else if (rotateCircleX > rectX + rectWidth) {
+    cx = rectX+ rectWidth
+  } else {
+    cx = rotateCircleX
   }
-  // if there is overlap on all axes, the rectangle and circle do collide
-  return true;
+
+  if (rotateCircleY < rectY) {
+    cy = rectY
+  } else if (rotateCircleY > rectY + rectHeight) {
+    cy = rectY + rectHeight
+  } else {
+    cy = rotateCircleY
+  }
+
+  if (distance(rotateCircleX, rotateCircleY, cx, cy) < circleRadius) {
+    console.log('COLLISION!!!')
+    return true
+  }
+
+  return false
+
 }
 
-function project(rectX, rectY, rectWidth, rectHeight, axis) {
-  const rectHalfWidth = rectWidth / 2;
-  const rectHalfHeight = rectHeight / 2;
 
-  const rectTopLeft = {x: rectX - rectHalfWidth * axis.x + rectHalfHeight * axis.y, y: rectY - rectHalfWidth * axis.y - rectHalfHeight * axis.x};
-  const rectBottomRight = {x: rectX + rectHalfWidth * axis.x + rectHalfHeight * axis.y, y: rectY + rectHalfWidth * axis.y - rectHalfHeight * axis.x};
 
-  return {min: dotProduct(rectTopLeft, axis), max: dotProduct(rectBottomRight, axis)};
-}
-
-function projectCircle(circleX, circleY, circleRadius, axis) {
-  const dot = dotProduct({x: circleX, y: circleY}, axis);
-  return {min: dot - circleRadius, max: dot + circleRadius};
-}
-
-function dotProduct(point, axis) {
-  return point.x * axis.x + point.y * axis.y;
-}
-
-function getOverlap(projection1, projection2) {
-  return Math.min(projection1.max, projection2.max) - Math.max(projection1.min, projection2.min);
-}
-
-const getAxis = (rect) => {
-  const OX = new Vector({x:1, y:0});
-  const OY = new Vector({x:0, y:1});
-  // Do not forget to transform degree to radian
-  const RX = OX.Rotate(rect.angle * Math.PI / 180);
-  const RY = OY.Rotate(rect.angle * Math.PI / 180);
-
-  return [
-     new Line({...rect.center, dx: RX.x, dy: RX.y}),
-     new Line({...rect.center, dx: RY.x, dy: RY.y}),
-  ];
-}
 const Canvas = props => {
   
   const canvasRef = useRef(null)
@@ -367,7 +342,7 @@ const Canvas = props => {
     let powerShots = 0
     let time = 0
     const spawnEnemies = () => {
-      // setInterval(() => {
+      setInterval(() => {
         context.clearRect(0, 0, canvas.width, canvas.height)
         const makeEnemy = () => {
 
@@ -426,7 +401,7 @@ const Canvas = props => {
         }
      
   
-      // },1000)
+      },1000)
     }
     spawnEnemies()
   
@@ -528,7 +503,10 @@ const Canvas = props => {
         }
         const distanceBetweenPlayer = Math.hypot(player.x - powerUp.x, player.y - powerUp.y)
         // ON HIT
-        const colliding = RectCircleColliding(powerUp, player)
+        // const colliding = RectCircleColliding(powerUp, player)
+        detectCollision
+        const colliding = detectCollision(player.x, player.y, player.w, player.h, player.angle, powerUp.x, powerUp.y,15)
+
       
         if(colliding){
           console.log('power collided')
@@ -544,27 +522,18 @@ const Canvas = props => {
       
       enemies.forEach((enemy, iE) => {
       enemy.update()
-      let tankInvMatrix = context.getTransform().invertSelf()
-        //  console.log('tankInvMatrix', tankInvMatrix)
-        let  bullet = new DOMPoint(enemy.x,enemy.y);
-       let relBullet = tankInvMatrix.transformPoint(bullet)
-       console.log(relBullet)
-       console.log('enemy.x', enemy.x)
-        if(relBullet.x > player.x && relBullet.x < 80 && relBullet.x > -40 && relBullet.x < 30){
-  console.log('bullet hit tank', bullet)
-  /// bullet has hit the tank
-}
+   
       if(enemy.x + enemy.radius < 0 || 
         enemy.x - enemy.radius > canvas.width ||
-        enemy.y + enemy.radius > canvas.height ||
+        enemy.y + enemy.radius < 0 ||
         enemy.y - enemy.radius > canvas.height 
         ){
-          if( enemy.x + enemy.radius >= canvas.width + enemy.radius + 50  || enemy.x - enemy.radius <= 90 + enemy.radius + 50){
+          if( enemy.x + enemy.radius >= canvas.width -150  || enemy.x - enemy.radius <= 90 + enemy.radius + 50){
+        
             enemy.velocity.x = -enemy.velocity.x;
           }
-          // console.log('enemy.y - enemy.radius', enemy.y - enemy.radius)
-          if( enemy.y + enemy.radius >= canvas.height + enemy.radius  + 50|| enemy.y - enemy.radius <= 90 + enemy.radius + 50   ){
-            
+   
+          if( enemy.y + enemy.radius >= canvas.height + enemy.radius  + 50|| enemy.y + enemy.radius <= 0  ){
             enemy.velocity.y = -enemy.velocity.y;
           }
         // setTimeout(() => {
@@ -577,12 +546,12 @@ const Canvas = props => {
     // const colliding = RectCircleColliding(enemy, player)
     const colliding = detectCollision(player.x, player.y, player.w, player.h, player.angle, enemy.x, enemy.y, enemy.radius)
     
-      if(!colliding){
-        console.log(colliding)
+      if(colliding){
+        // console.log(colliding)
    
-      //  window.cancelAnimationFrame(animationFrameId)
-      //  player.level=1
-      //  setPlay(false)
+       window.cancelAnimationFrame(animationFrameId)
+       player.level=1
+       setPlay(false)
 
       }
      
@@ -684,7 +653,6 @@ const Canvas = props => {
       mousedownID=-1;
       
       if(shooting){
-        setTimeout(() => shoot(e), 300)
         // shoot(e)
         mousedownID = setInterval( () => shoot(e), 300 /*execute every 100ms*/);
       }  //Prevent multimple loops!
@@ -696,7 +664,7 @@ const Canvas = props => {
       console.log('end game done')
     }
     window.addEventListener('mouseup',(e) => {
-      console.log('mouseup')
+      
       clearInterval(mousedownID);
       shooting = false
       mousedownID=-1;
