@@ -18,7 +18,7 @@ export const RightFooter = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  order: 3;
+  order: 2;
   @media (min-width: ${({ theme }) => theme.mediaQuery.mediaMinMedium}) {
     flex-direction: row;
     gap: 16px;
@@ -34,7 +34,7 @@ export const CenterFooter = styled.div`
   }
 `;
 export const LeftFooter = styled(RightFooter)`
-  order: 1;
+  order: 3;
   @media (min-width: ${({ theme }) => theme.mediaQuery.mediaMinMedium}) {
     order: 2;
   }
